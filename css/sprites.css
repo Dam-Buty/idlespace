@@ -1,0 +1,9 @@
+
+.ship {
+    top: 50%;
+    left: 0;
+}
+
+.hostile {
+    right: 0;
+}

@@ -1,0 +1,49 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    height: 5%;
+    border-bottom: 1px solid black;
+}
+
+section {
+    position: relative;
+    width: 100%;
+}
+
+#game-area {
+    height: 70%;
+    overflow: hidden;
+}
+
+#game-area > pre {
+    position: absolute;
+    transition: all 0 linear;
+}
+
+#game-area > pre .hp {
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    margin-top: 5px;
+    
+    background-color: #5DC362;
+}
+
+#hud-area {
+    height: 25%;
+    border-top: 1px solid black;
+}
+
+#sprites {
+    position: absolute;
+    left: -100000px;
+}
+
+#sprites > pre {
+    display: inline-block;
+}
