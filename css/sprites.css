@@ -1,9 +1,59 @@
 
+.hostile {
+    z-index: 10;
+}
+
 .ship {
     top: 50%;
     left: 0;
+    z-index: 50;
 }
 
-.hostile {
-    right: 0;
+.scrap {
+    z-index: 100;
+    transition: color 500ms;
+    color: #F7FF80;
+}
+
+.hp {
+    bottom: 0;
+    background-color: #5DC362;
+}
+
+.shield {
+    top: 0;
+    background-color: #5D73C7;
+}
+
+.exploding {    
+    -webkit-animation: explosion 1s;
+    -moz-animation: explosion 1s;
+    -o-animation: explosion 1s;
+    animation: explosion 1s;
+}
+
+.scrapping {    
+    color: #FF0404;
+}
+
+@-webkit-keyframes explosion {
+    20% {
+        color: #F7FF80;
+    }
+    
+    50% {
+        color: #FF7127;
+        opacity: 1;
+    }
+    
+    75% {
+        color: #FF0404;
+        line-height: 20px;
+        letter-spacing: 10px;
+    }
+    
+    100% {
+        color: black;
+        opacity: 0;
+    }
 }

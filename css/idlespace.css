@@ -18,20 +18,24 @@ section {
 #game-area {
     height: 70%;
     overflow: hidden;
+    color: white;
+    background-color: black;
 }
 
 #game-area > pre {
     position: absolute;
     transition: all 0 linear;
+    display: inline-block;
+    width: auto;
 }
 
-#game-area > pre .hp {
+#game-area > pre > span {
     position: absolute;
     width: 100%;
     height: 5px;
     margin-top: 5px;
     
-    background-color: #5DC362;
+    transition: width 200ms;
 }
 
 #hud-area {
