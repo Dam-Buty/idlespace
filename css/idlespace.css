@@ -1,53 +1,51 @@
-
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0; }
 
 header {
-    height: 5%;
-    border-bottom: 1px solid black;
-}
+  height: 5%;
+  border-bottom: 1px solid black; }
 
 section {
-    position: relative;
-    width: 100%;
-}
-
-#game-area {
+  position: relative;
+  width: 100%; }
+  section#game-area {
     height: 70%;
     overflow: hidden;
     color: white;
-    background-color: black;
-}
-
-#game-area > pre {
-    position: absolute;
-    transition: all 0 linear;
-    display: inline-block;
-    width: auto;
-}
-
-#game-area > pre > span {
-    position: absolute;
-    width: 100%;
-    height: 5px;
-    margin-top: 5px;
-    
-    transition: width 200ms;
-}
-
-#hud-area {
+    background-color: black; }
+    section#game-area pre {
+      position: absolute;
+      transition: all 0 linear;
+      display: inline-block;
+      width: auto; }
+      section#game-area pre span {
+        position: absolute;
+        width: 100%;
+        height: 5px;
+        margin-top: 5px;
+        transition: width 200ms; }
+    section#game-area .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: 0 0;
+      font-size: 5px; }
+      section#game-area .background.far {
+        -webkit-filter: blur(1px);
+        color: #6363E8; }
+      section#game-area .background.near {
+        -webkit-filter: blur(0.5px);
+        color: #883B3B; }
+  section#hud-area {
     height: 25%;
-    border-top: 1px solid black;
-}
+    border-top: 1px solid black; }
 
-#sprites {
-    position: absolute;
-    left: -100000px;
-}
+#sprites, #backgrounds {
+  position: absolute;
+  left: -100000px; }
+  #sprites pre, #backgrounds pre {
+    display: inline-block; }
 
-#sprites > pre {
-    display: inline-block;
-}
+/*# sourceMappingURL=idlespace.css.map */

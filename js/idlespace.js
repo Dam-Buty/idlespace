@@ -62,6 +62,10 @@ var Utils = {
         return document.getElementById("sprites").getElementsByClassName(name)[0];
     },
     
+    background: function(name) {
+        return document.getElementById("backgrounds").getElementsByClassName(name)[0];
+    },
+    
     keyMap: function() {
         document.onkeydown = function (e) {
             e = e || window.event;
@@ -71,9 +75,9 @@ var Utils = {
             
             switch(e.keyCode) {
                 case 32:
-                    if (Game.ship.systems.weapons.handle === undefined) {
-                        Game.ship.systems.weapons.start();
-                    }
+//                    if (Game.ship.systems.weapons.handle === undefined) {
+//                        Game.ship.systems.weapons.start();
+//                    }
                     break;
                 case 37:
                     Game.ship.move("left");
@@ -98,10 +102,10 @@ var Utils = {
             
             switch(e.keyCode) {
                 case 32:
-                    Game.ship.systems.weapons.stop();
+//                    Game.ship.systems.weapons.stop();
                     break;
             }
-        }
+        };
     },
     
     collision: function(el, targets, max) {
@@ -131,6 +135,34 @@ var Utils = {
         }
         
         return collisions;
+    },
+    
+    fitBackground: function(el) {        
+        Game.gameArea.element.appendChild(el);
+        
+        var x = 1, y = 1;
+        var rect = el.getBoundingClientRect();
+        
+        for(var done = false;!done;) {
+            var _x = rect.width * x;
+            var _y = rect.height * y;
+            
+            if (_x < Game.gameArea.width + 200) {
+                x += 1/100;
+            }
+            
+            if (_y < Game.gameArea.height) {
+                y += 1/100;
+            }
+            
+            
+            if (_y >= Game.gameArea.height &&
+                _x >= Game.gameArea.width + 200) {
+                done = true;
+            }
+        }
+        
+        el.style.transform = "scale(" + x + ", " + y + ")";
     }
 };
 
@@ -152,6 +184,10 @@ var Game = {
     
     gameArea: {
         element: undefined,
+        background: {
+            far: undefined,
+            near: undefined
+        },
         width: 0,
         height: 0
     },
@@ -191,7 +227,7 @@ var Game = {
         
         kill: function(idx) {
             this.live.splice(idx, 1);
-            if (this.live.length == 0) {
+            if (this.live.length === 0) {
                 Game.nextSector();
             } else {
                 this.reorder();
@@ -224,12 +260,23 @@ var Game = {
         // Init spawner and ship
         this.spawner = Spawner();
         this.ship = Ship();
+        this.ship.systems.weapons.start();
         this.gameArea.element.appendChild(this.ship.sprite);
         
         // Map keyboard
         Utils.keyMap();
         
+        this.background();
+        
         this.nextSector();
+    },
+    
+    background: function() {
+        this.gameArea.background.far = Utils.background("far").cloneNode(true);
+        this.gameArea.background.near = Utils.background("near").cloneNode(true);
+        
+        Utils.fitBackground(this.gameArea.background.far);
+        Utils.fitBackground(this.gameArea.background.near);        
     },
     
     nextSector: function() {
@@ -477,8 +524,6 @@ var Enemy = function(enemy) {
         hud: {
             hp: hudHp
         },
-                
-        handle: undefined,
         
         spawn: function() {
             this.top = Math.random() * (Game.gameArea.height - this.height);
