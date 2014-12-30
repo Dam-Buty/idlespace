@@ -10,7 +10,7 @@ var Bullet = function(options) {
     });
     
     return {
-        delay: 500,
+        delay: 100,
         handle: undefined,        
         
         hostile: options.hostile,
@@ -26,7 +26,7 @@ var Bullet = function(options) {
             if (!this.sprite.move(this.direction) || this.collision()) {
                 this.die();
             } else {
-                this.handle = setInterval(function() {
+                this.handle = setTimeout(function() {
                     self.move();
                 }, this.delay);
             }

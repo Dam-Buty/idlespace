@@ -28,7 +28,7 @@ var Enemy = function(enemy) {
         sprite: sprite,
         
         spawn: function() {            
-            this.sprite.element.style.transitionDuration = this.delay;
+//            this.sprite.element.style.transitionDuration = this.delay;
             
             this.move();
         },
@@ -37,7 +37,7 @@ var Enemy = function(enemy) {
             if (!this.exploding) {
                 var self = this;
                 
-                this.sprite.move();
+                this.sprite.move("left");
                 
                 if (!this.collision()) {
                     this.handle = setTimeout(function() {
@@ -72,12 +72,14 @@ var Enemy = function(enemy) {
         },
         
         hit: function(damage) {
-            this.hp = this.hp - damage;
-            
-            if (this.hp <= 0) {
-                this.die();
-            } else {
-                this.sprite.hud.hp.style.width = (this.hp * 100 / this.maxHP) + "%";
+            if (!this.exploding) {
+                this.hp = this.hp - damage;
+                
+                if (this.hp <= 0) {
+                    this.die();
+                } else {
+                    this.sprite.hud.hp.style.width = (this.hp * 100 / this.maxHP) + "%";
+                }
             }
         },
         
@@ -94,10 +96,10 @@ var Enemy = function(enemy) {
             
             setTimeout(function() {
                 Game.scrap(self.scrap, self.delay, {
-                    width: self.width,
-                    height: self.height,
-                    top: self.top,
-                    left: self.left
+                    width: self.sprite.width,
+                    height: self.sprite.height,
+                    top: self.sprite.top,
+                    left: self.sprite.left
                 });
                 
                 Game.gameArea.element.removeChild(self.sprite.element);

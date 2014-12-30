@@ -43,7 +43,7 @@ var Ship = function() {
             
             weapons: {
                 active: false,
-                rate: 1000,
+                rate: 400,
                 bullets: 1,
                 speed: 0.5,
                 damage: 4,

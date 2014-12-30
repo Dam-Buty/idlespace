@@ -113,7 +113,7 @@ var Game = {
     nextSector: function() {
         this.sector++;
         this.spawner.populateSector();
-        //this.enemies.spawn();
+        this.enemies.spawn();
         
         this.hudArea.gameSector.innerHTML = this.sector;
     },
@@ -123,10 +123,11 @@ var Game = {
         for (;scrap > 0;) {
             for(var i = 0;i < values.length;i++) {
                 var value = values[i];
-                var top = coords.top + (Math.random() * coords.height);
-                var left = coords.left + (Math.random() * coords.width);
             
                 if (scrap >= value) {
+                    var top = coords.top + (Math.random() * coords.height);
+                    var left = coords.left + (Math.random() * coords.width);
+                    
                     Scrap({
                         top: top,
                         left: left,

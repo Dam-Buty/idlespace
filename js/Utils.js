@@ -21,7 +21,7 @@ var Utils = {
     },
     
     linear: function(boundaries) {
-        return (boundaries[0] + (Math.random() * (boundaries[1] - boundaries[0])));
+        return Math.floor((boundaries[0] + (Math.random() * (boundaries[1] - boundaries[0]))));
     },
     
     shuffleArray: function(array) {

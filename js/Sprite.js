@@ -64,10 +64,10 @@ var Sprite = function(options) {
             }
             
             var collisions = [];        
-            var elPos = getPositions(this.element);
+            var elPos = getPositions(this);
             
             for(var i = 0;i < targets.length && (collisions.length < (max || targets.length));i++) {
-                var targetPos = getPositions(targets[i]);
+                var targetPos = getPositions(targets[i].sprite);
                 
                 if (comparePositions(elPos[0], targetPos[0]) && comparePositions(elPos[1], targetPos[1])) {
                     collisions.push(targets[i]);
@@ -102,8 +102,8 @@ var Sprite = function(options) {
             }
             
             if (this.left < 0 || this.top < 0 
-            || this.left > (Game.gameArea.width - this.width) 
-            || this.top > (Game.gameArea.height - this.height)) {
+            || this.left > Game.gameArea.width
+            || this.top > Game.gameArea.height) {
                 
                 switch(this.warp) {
                     case undefined: 

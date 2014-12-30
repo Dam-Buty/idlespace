@@ -18,10 +18,12 @@ var Scrap = function(options) {
         sprite: sprite,
         
         move: function() {
-            if (!this.sprite.move() || this.collision()) {
+            var self = this;
+            
+            if (!this.sprite.move("left") || this.collision()) {
                 this.die();
             } else {
-                this.handle = setInterval(function() {
+                this.handle = setTimeout(function() {
                     self.move();
                 }, this.delay);
             }

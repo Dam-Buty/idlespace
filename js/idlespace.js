@@ -28,4 +28,20 @@ var enemies = [{
     speed: 1
 }];
 
+// var lastUsedHeap = 0;  // remember the heap size
+//
+// function checkMemory()
+// {
+//     // check if the heap size is this cycle is LESS than what we had last
+//     // cycle; if so, then the garbage collector has kicked in
+//
+//     console.log(window.performance.memory.usedJSHeapSize + " / " + window.performance.memory.totalJSHeapSize);
+//
+//     if (window.performance.memory.usedJSHeapSize < lastUsedHeap)
+//         console.log('Garbage collected!');
+//     lastUsedHeap = window.performance.memory.usedJSHeapSize;
+// }
+//
+// setInterval(checkMemory, 1000); // test 10 times per second
+
 Game.go();
