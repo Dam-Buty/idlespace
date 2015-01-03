@@ -3,29 +3,29 @@ var enemies = [{
     name: "Alice",
     hp: 10,
     scrap: [1, 3],
-    population: 25,
+    population: 200,
     sectors: [-20, 30],
-    shield: 5,
-    warp: true,
-    speed: 1
+    damage: 5,
+    warp: "warp",
+    speed: [50, 150]
 }, {
     name: "Bob",
     hp: 18,
     scrap: [2, 4],
-    population: 8,
+    population: 50,
     sectors: [-20, 50],
-    shield: 10,
-    warp: true,
-    speed: 1
+    damage: 10,
+    warp: "warp",
+    speed: [100, 200]
 }, {
     name: "Dave",
     hp: 42,
     scrap: [5, 10],
-    population: 4,
+    population: 30,
     sectors: [-20, 80],
-    shield: 20,
-    warp: true,
-    speed: 1
+    damage: 20,
+    warp: "warp",
+    speed: [25, 50]
 }];
 
 // var lastUsedHeap = 0;  // remember the heap size

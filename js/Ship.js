@@ -1,15 +1,4 @@
 var Ship = function() {
-    var sprite = Sprite({
-        id: "ship",
-
-
-        left: 0,
-
-        speed: 2,
-
-        hud: ["hp", "shield"]
-    });
-
     return {
         lives: 3,
         scrap: 0,
@@ -23,15 +12,16 @@ var Ship = function() {
             hp: 30,
             acceleration: 1000,
             team: 0,
-            kills: true,
+            kills: false,
             dies: false,
+            damage: 10,
 
             onLethal: function() {
               self.lives--;
             },
 
             sprite: Utils.getSprite("ship"),
-            top: Game.gameArea.height / 2,
+            top: Game.collider.area.height / 2,
             left: 0
           };
 
@@ -44,7 +34,7 @@ var Ship = function() {
 
         systems: {
             thrusters: {
-                speed: 50,
+                speed: 100,
                 acceleration: 1000
             },
 

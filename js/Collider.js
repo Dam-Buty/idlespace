@@ -1,5 +1,6 @@
-var Collider = funtion(area) {
+var Collider = function(area) {
   return {
+    handle: undefined,
 
     area: {
       el: area || document.body,
@@ -29,32 +30,47 @@ var Collider = funtion(area) {
     teams: [],
 
     spawn: function(entity) {
+      if (this.teams[entity.team] === undefined) {
+        this.teams[entity.team] = [];
+      }
+
       this.teams[entity.team].push(entity);
 
       if (entity.sprite.top == -1) {
-        entity.sprite.top = Math.random() * (this.area.offsetHeight - entity.sprite.height);
+        entity.sprite.top = Math.random() * (this.area.height - entity.sprite.height);
       }
 
       if (entity.sprite.left == -1) {
-        entity.sprite.left = Math.random() * (this.area.offsetWidth - entity.sprite.width);
+        entity.sprite.left = Math.random() * (this.area.width - entity.sprite.width);
       }
 
-      this.area.appendChild(entity.sprite.el);
+      this.area.el.appendChild(entity.sprite.el);
 
       entity.sprite.init();
+    },
+
+    stop: function() {
+      window.cancelAnimationFrame(this.handle);
     },
 
     start: function() {
       this.area.init();
       this.lastTick = new Date();
       this.frame();
-    }
+
+      return this;
+    },
 
     frame: function() {
       console.time("frame");
-      requestAnimationFrame(this.frame);
+      var self = this;
 
-      var time = new Date() - this.lastTick;
+      this.handle = window.requestAnimationFrame(function() {
+        self.frame();
+      });
+
+      var time = new Date();
+      var delay = (time - this.lastTick) / 1000;
 
       // Everybody move!
       for(var i = 0;i < this.teams.length;i++) {
@@ -63,7 +79,7 @@ var Collider = funtion(area) {
             var entity = team[j];
             if (!entity.dead && entity.moving) {
               if (entity.speed > 0) {
-                entity.move(time / 1000, this.area);
+                entity.move(delay, this.area);
               }
             }
           }
@@ -72,11 +88,13 @@ var Collider = funtion(area) {
       // Everybody collide! *_* faire collider que ceux qui ont bougé?
       for(var i = 0;i < this.teams.length;i++) {
         var teamA = this.teams[i];
-        for(var j = 0;j < this.teams.length;j++) {
+        for(var j = i+1;j < this.teams.length;j++) {
           var teamB = this.teams[j];
           this.collide(teamA, teamB);
         }
       }
+
+      this.lastTick = time;
 
       console.timeEnd("frame");
     },

@@ -14,29 +14,20 @@ var Game = {
     },
 
     enemies: {
-        live: [],
         queue: [],
-        handle: undefined,
 
         spawn: function() {
             if (this.queue.length > 0) {
                 var spawning = this.queue.shift();
-                var idx = this.live.length;
                 var self = this;
 
-                spawning.idx = idx;
-
-                this.live.push(spawning);
-
-                spawning.spawn();
+                Game.collider.spawn(spawning.entity);
 
                 if (this.queue.length > 0) {
-                    this.handle = setTimeout(function() {
-                        self.spawn();
-                    }, spawning.delay);
+                  Game.riddim.plan(function() {
+                    self.spawn();
+                  }).in(Utils.linear([Game.spawner.minDelay, Game.spawner.maxDelay]));
                 }
-            } else {
-                Game.nextSector();
             }
         },
 
@@ -57,32 +48,23 @@ var Game = {
     },
 
     go: function() {
-        // Init game Area
-        this.gameArea.element = document.getElementById("game-area");
-        this.gameArea.width = this.gameArea.element.offsetWidth;
-        this.gameArea.height = this.gameArea.element.offsetHeight;
-
         // Init HUD
         this.hudArea.element = document.getElementById("hud-area");
         this.hudArea.gameSector = document.getElementById("game-sector");
         this.hudArea.shipLives = document.getElementById("ship-lives");
         this.hudArea.scrap = document.getElementById("ship-scrap");
 
-        // Calculate grid
-        this.chunk.x = this.gameArea.width / this.grid.x;
-        this.chunk.y = this.gameArea.height / this.grid.y;
-
         // Init spawner and ship
         this.riddim = Riddim().start();
-        this.collider = Collider().start();
-        this.spawner = Spawner();
+        this.collider = Collider(document.getElementById("game-area")).start();
         this.ship = Ship().init();
-        this.ship.systems.weapons.start();
+        this.spawner = Spawner();
+        //this.ship.systems.weapons.start();
 
         // Map keyboard
         Utils.keyMap();
 
-        this.background();
+        //this.background();
 
         this.nextSector();
     },

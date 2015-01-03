@@ -2,6 +2,7 @@ var Entity = function(options) {
   return {
     maxHp: options.hp || 0,
     hp: options.hp || 0,
+    damage: options.damage || 0,
     dead: false,
 
     moving: options.moving || false,
@@ -21,8 +22,8 @@ var Entity = function(options) {
 
     sprite: {
       el: options.sprite,
-      top: options.top || undefined,
-      left: options.left || undefined,
+      top: options.top || 0,
+      left: options.left || 0,
 
       width: 0,
       height: 0,
@@ -36,36 +37,36 @@ var Entity = function(options) {
         this.left += x;
         this.top += y;
 
-        var warped = this.warp(area, parent);
+        this.warp(area, parent);
 
         this.el.style.left = this.left;
         this.el.style.top = this.top;
       },
 
       warp: function(area, parent) {
-        if (this.warp === undefined) {
+        if (parent.warp === undefined) {
           this.left = Math.max(0, this.left);
-          this.left = Math.min(this.left, area.width - this.sprite.width);
+          this.left = Math.min(this.left, area.width - this.width);
           this.top = Math.max(0, this.top);
-          this.top = Math.min(this.top, area.height - this.sprite.height);
+          this.top = Math.min(this.top, area.height - this.height);
         } else {
-          switch(this.warp) {
+          switch(parent.warp) {
             case "warp":
-              if (this.left < 0 - this.sprite.width) {
+              if (this.left < 0 - this.width) {
                 this.left = area.width;
                 this.top = area.height - this.top;
               }
-              if (this.left > area.width + this.sprite.width) {
-                this.left = 0 - this.sprite.width;
+              if (this.left > area.width + this.width) {
+                this.left = 0 - this.width;
                 this.top = area.height - this.top;
               }
-              if (this.top < 0 - this.sprite.height) {
+              if (this.top < 0 - this.height) {
                 this.left = area.width - this.left;
                 this.top = area.height;
               }
-              if (this.top > area.height + this.sprite.height) {
+              if (this.top > area.height + this.height) {
                 this.left = area.width - this.left;
-                this.top = 0 - this.sprite.height;
+                this.top = 0 - this.height;
               }
               break;
             case "die":
@@ -75,11 +76,6 @@ var Entity = function(options) {
               break;
           }
         }
-
-        return {
-          x: x,
-          y: y
-        };
       },
 
       getPositions: function() {
@@ -96,9 +92,9 @@ var Entity = function(options) {
     // based on angle
     move: function(time, area) {
       var x, y, warped;
-      var angle = this.direction % 90;
-      var adj = this.speed * Math.cos(angle);
-      var opp = this.speed * Math.cos(90 - angle);
+      var angle = (this.direction % 90) * Math.PI / 180;
+      var adj = this.speed * Math.cos(Utils.radians(angle));
+      var opp = this.speed * Math.cos(Utils.radians(90 - angle));
 
       if (this.direction < 90) {
         x = opp;
@@ -121,13 +117,17 @@ var Entity = function(options) {
       x *= time;
       y *= time;
 
+      //console.table([time, x, y]);
+
       this.sprite.move(x, y, area, this);
     },
 
     hit: function(damage) {
       this.hp -= damage;
 
-      this.onHit();
+      if (this.onHit !== undefined) {
+        this.onHit();
+      }
 
       if (this.hp <= 0) {
         if (this.dies) {

@@ -39,45 +39,58 @@ var Utils = {
     },
 
     keyMap: function() {
-        document.onkeydown = function (e) {
-            e = e || window.event;
-            // use e.keyCode
+      var arrows = {
+        37: true,
+        38: true,
+        39: true,
+        40: true
+      };
 
-//            console.log(e.keyCode);
+      document.onkeydown = function (e) {
+          e = e || window.event;
 
-            switch(e.keyCode) {
-                case 32:
+          if (e.keyCode in arrows) {
+            Game.ship.entity.moving = true;
+            Game.ship.entity.speed = Game.ship.systems.thrusters.speed;
+            Game.ship.entity.acceleration = Game.ship.systems.thrusters.acceleration;
+          }
+
+          switch(e.keyCode) {
+              case 32:
 //                    if (Game.ship.systems.weapons.handle === undefined) {
 //                        Game.ship.systems.weapons.start();
 //                    }
-                    break;
-                case 37:
-                    Game.ship.move("left");
-                    break;
-                case 38:
-                    Game.ship.move("up");
-                    break;
-                case 39:
-                    Game.ship.move("right");
-                    break;
-                case 40:
-                    Game.ship.move("down");
-                    break;
-            }
-        };
+                  break;
+              case 37:
+                  Game.ship.entity.direction = 270;
+                  break;
+              case 38:
+                Game.ship.entity.direction = 0;
+                  break;
+              case 39:
+                Game.ship.entity.direction = 90;
+                  break;
+              case 40:
+                Game.ship.entity.direction = 180;
+                  break;
+          }
 
-        document.onkeyup = function (e) {
-            e = e || window.event;
-            // use e.keyCode
+          //console.log(Game.ship.entity);
+      };
 
-//            console.log(e.keyCode);
+      document.onkeyup = function (e) {
+          e = e || window.event;
+          // use e.keyCode
+          if (e.keyCode in arrows) {
+            Game.ship.entity.moving = false;
+          }
 
-            switch(e.keyCode) {
-                case 32:
+          switch(e.keyCode) {
+              case 32:
 //                    Game.ship.systems.weapons.stop();
-                    break;
-            }
-        };
+                  break;
+          }
+      };
     },
 
     fitBackground: function(el) {
@@ -110,5 +123,9 @@ var Utils = {
 
     getSprite: function(name) {
       return document.getElementById("sprites").getElementsByClassName(name)[0].cloneNode(true);
+    },
+
+    radians: function(degrees) {
+      return degrees * Math.PI / 180;
     }
 };

@@ -1,97 +1,54 @@
 var Enemy = function(enemy) {
-    var sprite = Sprite({
-        id: enemy.name,
-
-        top: -1,
-        left: Game.gameArea.width,
-
-        ticks: Utils.linear([Game.spawner.minDelay, Game.spawner.maxDelay]),
-        speed: enemy.speed,
-        warp: enemy.warp,
-
-        hud: ["hp"]
-    });
-
     return {
-        idx: undefined,
-
         name: enemy.name,
-        maxHP: enemy.hp,
-        hp: enemy.hp,
-        shield: enemy.shield,
 
         scrap: Utils.linear(enemy.scrap),
 
-        exploding: false,
+        entity: undefined,
 
-        sprite: sprite,
-
-        spawn: function() {
-            this.sprite.element.style.transitionDuration = this.delay * 100;
-
-            this.move();
-        },
-
-        move: function() {
+        init: function() {
           var self = this;
-          Game.riddim.plan(function() {
-            if (!self.exploding) {
-              self.sprite.move("left");
 
-              return !self.collision();
-            } else {
-              return false;
-            }
-          }).every(this.delay);
+          var options = {
+            hp: enemy.hp,
 
-        },
+            moving: true,
+            direction: 270,
+            speed: Utils.linear(enemy.speed),
+            acceleration: 1000,
+            warp: enemy.warp,
 
-        collision: function() {
-            var hit = this.sprite.collision([Game.ship], 1);
+            team: 1,
+            kills: true,
+            dies: true,
+            damage: enemy.damage,
 
-            if (hit.length > 0) {
-                hit[0].hit(this.shield);
-                return this.hit(hit[0].shield);
-            }
+            onLethal: function() {
+              //self.sprite.element.removeChild(self.sprite.hud.hp);
+              self.sprite.el.classList.add("exploding");
 
-            return false;
-        },
+              // Game.riddim.plan(function() {
+              //   Game.scrap(self.scrap, self.delay, {
+              //     width: self.sprite.width,
+              //     height: self.sprite.height,
+              //     top: self.sprite.top,
+              //     left: self.sprite.left
+              //   });
+              //
+              //   Game.gameArea.element.removeChild(self.sprite.element);
+              //
+              //   Game.enemies.kill(self.idx);
+              // }).in(10);
+            },
 
-        hit: function(damage) {
-            if (!this.exploding) {
-                this.hp = this.hp - damage;
+            sprite: Utils.getSprite(enemy.name),
+            top: -1,
+            left: Game.collider.area.width
+          };
 
-                if (this.hp <= 0) {
-                    this.die();
-                    return false;
-                } else {
-                    this.sprite.hud.hp.style.width = (this.hp * 100 / this.maxHP) + "%";
-                }
+          this.entity = Entity(options);
 
-                return true;
-            }
-        },
-
-        die: function() {
-            var self = this;
-
-            this.exploding = true;
-
-            this.sprite.element.removeChild(this.sprite.hud.hp);
-            this.sprite.element.classList.add("exploding");
-
-            Game.riddim.plan(function() {
-                Game.scrap(self.scrap, self.delay, {
-                    width: self.sprite.width,
-                    height: self.sprite.height,
-                    top: self.sprite.top,
-                    left: self.sprite.left
-                });
-
-                Game.gameArea.element.removeChild(self.sprite.element);
-
-                Game.enemies.kill(self.idx);
-            }).in(10);
+          return this;
         }
     };
 };

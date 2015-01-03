@@ -18,7 +18,7 @@ var Spawner = function() {
             }
 
             for(var i = 0;i < population;i++) {
-                spawned.push(Enemy(enemy));
+                spawned.push(Enemy(enemy).init());
             }
 
             return spawned;
