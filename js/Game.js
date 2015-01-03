@@ -2,28 +2,10 @@ var Game = {
     sector: 0,
     handle: undefined,
 
-    grid: {
-        x: 100,
-        y: 50
-    },
-    chunk: {
-        x: 0,
-        y: 0
-    },
-
     riddim: undefined,
+    collider: undefined,
     spawner: undefined,
     ship: undefined,
-
-    gameArea: {
-        element: undefined,
-        background: {
-            far: undefined,
-            near: undefined
-        },
-        width: 0,
-        height: 0
-    },
 
     hudArea: {
         element: undefined,
@@ -92,8 +74,9 @@ var Game = {
 
         // Init spawner and ship
         this.riddim = Riddim().start();
+        this.collider = Collider().start();
         this.spawner = Spawner();
-        this.ship = Ship();
+        this.ship = Ship().init();
         this.ship.systems.weapons.start();
 
         // Map keyboard

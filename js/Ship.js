@@ -2,7 +2,7 @@ var Ship = function() {
     var sprite = Sprite({
         id: "ship",
 
-        top: Game.gameArea.height / 2,
+
         left: 0,
 
         speed: 2,
@@ -12,17 +12,40 @@ var Ship = function() {
 
     return {
         lives: 3,
-        hp: 30,
-        shield: 20,
-        maxHP: 30,
-        maxShield: 30,
         scrap: 0,
 
-        sprite: sprite,
+        entity: undefined,
+
+        init: function() {
+          var self = this;
+
+          var options = {
+            hp: 30,
+            acceleration: 1000,
+            team: 0,
+            kills: true,
+            dies: false,
+
+            onLethal: function() {
+              self.lives--;
+            },
+
+            sprite: Utils.getSprite("ship"),
+            top: Game.gameArea.height / 2,
+            left: 0
+          };
+
+          this.entity = Entity(options);
+
+          Game.collider.spawn(this.entity);
+
+          return this;
+        },
 
         systems: {
             thrusters: {
-                speed: 2
+                speed: 50,
+                acceleration: 1000
             },
 
             shieldRepair: {
@@ -64,10 +87,6 @@ var Ship = function() {
                   }).every(this.delay);
                 }
             }
-        },
-
-        move: function(direction) {
-            this.sprite.move(direction);
         },
 
         hit: function(damage) {
