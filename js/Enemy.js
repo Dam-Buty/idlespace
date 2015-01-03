@@ -5,6 +5,7 @@ var Enemy = function(enemy) {
         top: -1,
         left: Game.gameArea.width,
 
+        ticks: Utils.linear([Game.spawner.minDelay, Game.spawner.maxDelay]),
         speed: enemy.speed,
         warp: enemy.warp,
 
@@ -20,7 +21,6 @@ var Enemy = function(enemy) {
         shield: enemy.shield,
 
         scrap: Utils.linear(enemy.scrap),
-        delay: Utils.linear([Game.spawner.minDelay, Game.spawner.maxDelay]),
 
         exploding: false,
 
@@ -44,18 +44,6 @@ var Enemy = function(enemy) {
             }
           }).every(this.delay);
 
-        },
-
-        warp: function() {
-            var self = this;
-
-            this.left = Game.gameArea.width;
-            this.sprite.style.transitionDuration = 0;
-            this.sprite.style.left = this.left;
-
-            Game.riddim.plan(function() {
-                self.sprite.style.transitionDuration = self.delay;
-            }).in(this.delay);
         },
 
         collision: function() {

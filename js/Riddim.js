@@ -1,8 +1,8 @@
-var Riddim = function() {
+var Riddim = function(fps) {
   return {
     handle: undefined,
 
-    fps: 10,
+    fps: fps || 10,
 
     queue: [],
 
