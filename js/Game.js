@@ -6,6 +6,7 @@ var Game = {
     collider: undefined,
     spawner: undefined,
     ship: undefined,
+    km: undefined,
 
     hudArea: {
         element: undefined,
@@ -61,20 +62,14 @@ var Game = {
         this.spawner = Spawner();
         this.ship.systems.weapons.start();
 
-        // Map keyboard
-        Utils.keyMap();
-
         //this.background();
 
         this.nextSector();
     },
 
     background: function() {
-        this.gameArea.background.far = Utils.background("far").cloneNode(true);
-        this.gameArea.background.near = Utils.background("near").cloneNode(true);
-
-        Utils.fitBackground(this.gameArea.background.far);
-        Utils.fitBackground(this.gameArea.background.near);
+        Utils.fitBackground(Utils.background("far").cloneNode(true));
+        Utils.fitBackground(Utils.background("near").cloneNode(true));
     },
 
     checkSector: function() {

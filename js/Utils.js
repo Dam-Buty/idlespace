@@ -38,63 +38,8 @@ var Utils = {
         return document.getElementById("backgrounds").getElementsByClassName(name)[0];
     },
 
-    keyMap: function() {
-      var arrows = {
-        37: true,
-        38: true,
-        39: true,
-        40: true
-      };
-
-      document.onkeydown = function (e) {
-          e = e || window.event;
-
-          if (e.keyCode in arrows) {
-            Game.ship.entity.moving = true;
-            Game.ship.entity.speed = Game.ship.systems.thrusters.speed;
-            Game.ship.entity.acceleration = Game.ship.systems.thrusters.acceleration;
-          }
-
-          switch(e.keyCode) {
-              case 32:
-//                    if (Game.ship.systems.weapons.handle === undefined) {
-//                        Game.ship.systems.weapons.start();
-//                    }
-                  break;
-              case 37:
-                  Game.ship.entity.direction = 270;
-                  break;
-              case 38:
-                Game.ship.entity.direction = 0;
-                  break;
-              case 39:
-                Game.ship.entity.direction = 90;
-                  break;
-              case 40:
-                Game.ship.entity.direction = 180;
-                  break;
-          }
-
-          //console.log(Game.ship.entity);
-      };
-
-      document.onkeyup = function (e) {
-          e = e || window.event;
-          // use e.keyCode
-          if (e.keyCode in arrows) {
-            Game.ship.entity.moving = false;
-          }
-
-          switch(e.keyCode) {
-              case 32:
-//                    Game.ship.systems.weapons.stop();
-                  break;
-          }
-      };
-    },
-
     fitBackground: function(el) {
-        Game.gameArea.element.appendChild(el);
+        Game.collider.area.el.appendChild(el);
 
         var x = 1, y = 1;
         var rect = el.getBoundingClientRect();
@@ -103,17 +48,17 @@ var Utils = {
             var _x = rect.width * x;
             var _y = rect.height * y;
 
-            if (_x < Game.gameArea.width + 200) {
+            if (_x < Game.collider.area.width + 200) {
                 x += 1/100;
             }
 
-            if (_y < Game.gameArea.height) {
+            if (_y < Game.collider.area.height) {
                 y += 1/100;
             }
 
 
-            if (_y >= Game.gameArea.height &&
-                _x >= Game.gameArea.width + 200) {
+            if (_y >= Game.collider.area.height &&
+                _x >= Game.collider.area.width + 200) {
                 done = true;
             }
         }

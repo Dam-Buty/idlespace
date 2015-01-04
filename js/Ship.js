@@ -5,6 +5,8 @@ var Ship = function() {
 
         entity: undefined,
 
+        km: undefined,
+
         init: function() {
           var self = this;
 
@@ -29,13 +31,62 @@ var Ship = function() {
 
           Game.collider.spawn(this.entity);
 
+          this.km = Keymapper(this.systems.thrusters.activate).start();
+
           return this;
         },
 
         systems: {
             thrusters: {
                 speed: 100,
-                acceleration: 1000
+                acceleration: 1000,
+                activate: function(pressed) {
+                  var direction = 0;
+
+                  if (!pressed[37]
+                    && !pressed[38]
+                    && !pressed[39]
+                    && !pressed[40]
+                  ) {
+                    Game.ship.entity.moving = false;
+                  } else {
+                    if (pressed[37]) {
+                      if (pressed[38]) {
+                        direction = 315;
+                      } else {
+                        if (pressed[40]) {
+                          direction = 225;
+                        } else {
+                          direction = 270;
+                        }
+                      }
+                    } else {
+                      if (pressed[39]) {
+                        if (pressed[38]) {
+                          direction = 45;
+                        } else {
+                          if (pressed[40]) {
+                            direction = 135;
+                          } else {
+                            direction = 90;
+                          }
+                        }
+                      } else {
+                        if (pressed[38]) {
+                          direction = 0;
+                        } else {
+                          if (pressed[40]) {
+                            direction = 180
+                          }
+                        }
+                      }
+                    }
+
+                    Game.ship.entity.speed = Game.ship.systems.thrusters.speed;
+                    Game.ship.entity.moving = true;
+                    Game.ship.entity.direction = direction;
+                  }
+                }
             },
 
             shieldRepair: {

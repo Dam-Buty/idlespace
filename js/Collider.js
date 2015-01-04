@@ -10,7 +10,7 @@ var Collider = function(area) {
 
       grid: {
         x: 100,
-        y: 50
+        y: 100
       },
 
       chunk: {

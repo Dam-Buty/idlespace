@@ -79,6 +79,7 @@ var Entity = function(options) {
             case "die":
               if ( this.left < 0 || this.top < 0 || this.left > area.width || this.top > area.height) {
                 parent.dead = true;
+                parent.onLethal = undefined;
               }
               break;
           }
@@ -97,7 +98,7 @@ var Entity = function(options) {
     // based on angle
     move: function(time, area) {
       var x, y, warped;
-      var angle = (this.direction % 90) * Math.PI / 180;
+      var angle = this.direction % 90;
       var adj = this.speed * Math.cos(Utils.radians(angle));
       var opp = this.speed * Math.cos(Utils.radians(90 - angle));
 
@@ -122,14 +123,14 @@ var Entity = function(options) {
       x *= time;
       y *= time;
 
-      //console.table([time, x, y]);
+      // console.table([x, y]);
 
       this.sprite.move(x, y, area, this);
     },
 
     hit: function(damage) {
       this.hp -= damage;
-      
+
       if (this.sprite.hud !== undefined) {
         this.sprite.hud.style.width = (this.hp / this.maxHp * 100) + "%";
       }
