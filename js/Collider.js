@@ -28,11 +28,23 @@ var Collider = function(area) {
     },
 
     teams: [],
+    dead: {
+      queue: [],
+      clean: function(area) {
+        var dead;
+        for(;this.queue.length > 0;) {
+          dead = this.queue.pop();
+          area.removeChild(dead);
+        }
+      }
+    },
 
     spawn: function(entity) {
       if (this.teams[entity.team] === undefined) {
         this.teams[entity.team] = [];
       }
+
+      entity.idx = this.teams[entity.team].length;
 
       this.teams[entity.team].push(entity);
 
@@ -47,6 +59,25 @@ var Collider = function(area) {
       this.area.el.appendChild(entity.sprite.el);
 
       entity.sprite.init();
+    },
+
+    despawn: function(team, idx) {
+      var self = this;
+      var dead = this.teams[team].splice(idx, 1)[0];
+      var sprite = dead.sprite.el;
+
+      sprite.classList.add("dead");
+
+      // queue sprite to be removed in 10 ticks
+      Game.riddim.plan(function() {
+        self.dead.queue.push(sprite);
+      }).in(10);
+
+      // reorder entities in this team
+      for(var i = 0;i < this.teams[team].length;i++) {
+        var entity = this.teams[team][i];
+        entity.idx = i;
+      }
     },
 
     stop: function() {
@@ -72,20 +103,30 @@ var Collider = function(area) {
       var time = new Date();
       var delay = (time - this.lastTick) / 1000;
 
+      // Drag out the corpses
+      this.dead.clean(this.area.el);
+
       // Everybody move!
       for(var i = 0;i < this.teams.length;i++) {
           var team = this.teams[i];
           for (var j = 0;j < team.length;j++) {
             var entity = team[j];
-            if (!entity.dead && entity.moving) {
-              if (entity.speed > 0) {
+            if (!entity.dead) {
+              if (entity.moving && entity.speed > 0) {
                 entity.move(delay, this.area);
+              }
+            } else {
+              this.despawn(i, j);
+
+              // Calls the dead entity's onLethal callback
+              if (entity.onLethal !== undefined) {
+                entity.onLethal();
               }
             }
           }
       }
 
-      // Everybody collide! *_* faire collider que ceux qui ont bougé?
+      // Everybody collide!
       for(var i = 0;i < this.teams.length;i++) {
         var teamA = this.teams[i];
         for(var j = i+1;j < this.teams.length;j++) {

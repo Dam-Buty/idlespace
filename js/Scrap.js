@@ -1,56 +1,28 @@
 var Scrap = function(options) {
-    var sprite = Sprite({
-        id: "scrap",
-        
-        top: options.top,
-        left: options.left,
-        
-        speed: 1,
-        warp: false
-    });
-    
-    return {
-        handle: undefined,
-        delay: options.delay,
-        
-        value: options.value,
-        
-        sprite: sprite,
-        
-        move: function() {
-            var self = this;
-            
-            if (!this.sprite.move("left") || this.collision()) {
-                this.die();
-            } else {
-                this.handle = setTimeout(function() {
-                    self.move();
-                }, this.delay);
-            }
-        },
-        
-        collision: function() {
-            var ship = this.sprite.collision([Game.ship], 1);
-            
-            if (ship.length > 0) {
-                ship[0].addScrap(this.value);
-                return true;
-            }
-            
-            return false;
-        },
-        
-        die: function() {
-            var self = this;
-            
-            clearInterval(this.handle);
-            this.handle = undefined;
-            this.sprite.element.innerHTML = this.value;
-            this.sprite.element.classList.add("scrapping");
-            
-            setTimeout(function() {
-                Game.gameArea.element.removeChild(self.sprite.element);
-            }, 500);
-        }
+    var value = options.value;
+
+    var onLethal = function() {
+      this.sprite.el.innerHTML = value;
+      Game.ship.addScrap(value);
     };
+
+    return Entity({
+      hp: 1,
+      damage: 0,
+
+      moving: true,
+      direction: options.direction,
+      speed: options.speed,
+      warp: "die",
+
+      team: 1,
+      kills: false,
+      dies: true,
+
+      onLethal: onLethal,
+
+      sprite: Utils.getSprite("scrap"),
+      top: options.top,
+      left: options.left
+    });
 };

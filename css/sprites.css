@@ -20,23 +20,27 @@
     background-color: #5DC362;
 }
 
-.shield {
-    top: 0;
-    background-color: #5D73C7;
-}
-
 .bullet {
     color: #FF6B11;
 }
 
-.exploding {    
+.bullet.dead {
+  opacity: 0;
+}
+
+.exploding {
     -webkit-animation: explosion 1s;
     -moz-animation: explosion 1s;
     -o-animation: explosion 1s;
     animation: explosion 1s;
+
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-fill-mode: forwards;
+    -o-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
 }
 
-.scrapping {    
+.scrapping {
     color: #FF0404;
 }
 
@@ -44,18 +48,18 @@
     20% {
         color: #F7FF80;
     }
-    
+
     50% {
         color: #FF7127;
         opacity: 1;
     }
-    
+
     75% {
         color: #FF0404;
         line-height: 20px;
         letter-spacing: 10px;
     }
-    
+
     100% {
         color: black;
         opacity: 0;

@@ -12,7 +12,7 @@ var Ship = function() {
             hp: 30,
             acceleration: 1000,
             team: 0,
-            kills: false,
+            kills: true,
             dies: false,
             damage: 10,
 
@@ -58,46 +58,26 @@ var Ship = function() {
                 active: false,
                 delay: 4,
                 bullets: 1,
-                speed: 0.5,
+                speed: 200,
                 damage: 4,
                 missiles: 0,
 
                 start: function() {
                   var self = this;
+                  this.active = true;
 
                   Game.riddim.plan(function() {
-                    Bullet({
-                      hostile: false,
-                      speed: this.speed,
-                      damage: this.damage,
-                      direction: "right"
-                    }).move();
+                    Game.collider.spawn(Bullet({
+                      team: 0,
+                      speed: self.speed,
+                      damage: self.damage,
+                      direction: 90
+                    }));
 
-                    return true;
+                    return self.active;
                   }).every(this.delay);
                 }
             }
-        },
-
-        hit: function(damage) {
-            this.hp -= damage;
-            this.shield = Math.max(0, this.shield - damage);
-
-            if (this.hp <= 0) {
-                this.die();
-            }
-
-            this.sprite.hud.hp.style.width = (this.hp * 100 / this.maxHP) + "%";
-            this.sprite.hud.shield.style.width = (this.shield * 100 / this.maxShield) + "%";
-
-            this.repairShield();
-        },
-
-        die: function() {
-            this.lives--;
-            this.hp = this.maxHP;
-            this.shield = this.maxShield;
-            Game.hudArea.shipLives.innerHTML = this.lives;
         },
 
         repairShield: function() {

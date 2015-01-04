@@ -15,7 +15,7 @@ var Entity = function(options) {
 
     team: options.team || 0,
     kills: options.kills || false,
-    dies: options.kills || false,
+    dies: options.dies || false,
 
     onHit: options.onHit || undefined,
     onLethal: options.onLethal || undefined,
@@ -28,9 +28,16 @@ var Entity = function(options) {
       width: 0,
       height: 0,
 
+      hud: undefined,
+
       init: function() {
         this.width = this.el.offsetWidth;
         this.height = this.el.offsetHeight;
+
+        var huds = this.el.getElementsByClassName("hp");
+        if (huds.length > 0) {
+          this.hud = huds[0];
+        }
       },
 
       move: function(x, y, area, parent) {
@@ -86,8 +93,6 @@ var Entity = function(options) {
       }
     },
 
-    hud: options.hud,
-
     // Calculates how many pixels the entity should move
     // based on angle
     move: function(time, area) {
@@ -124,6 +129,10 @@ var Entity = function(options) {
 
     hit: function(damage) {
       this.hp -= damage;
+      
+      if (this.sprite.hud !== undefined) {
+        this.sprite.hud.style.width = (this.hp / this.maxHp * 100) + "%";
+      }
 
       if (this.onHit !== undefined) {
         this.onHit();
@@ -132,9 +141,9 @@ var Entity = function(options) {
       if (this.hp <= 0) {
         if (this.dies) {
           this.dead = true;
-        }
-        if (this.onLethal !== undefined) {
-          this.onLethal();
+          if (this.sprite.hud !== undefined) {
+            this.sprite.el.removeChild(this.sprite.hud);
+          }
         }
       }
     }

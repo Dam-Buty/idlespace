@@ -25,20 +25,24 @@ var Enemy = function(enemy) {
 
             onLethal: function() {
               //self.sprite.element.removeChild(self.sprite.hud.hp);
-              self.sprite.el.classList.add("exploding");
+              self.entity.sprite.el.classList.add("exploding");
+              Game.checkSector();
 
-              // Game.riddim.plan(function() {
-              //   Game.scrap(self.scrap, self.delay, {
-              //     width: self.sprite.width,
-              //     height: self.sprite.height,
-              //     top: self.sprite.top,
-              //     left: self.sprite.left
-              //   });
-              //
-              //   Game.gameArea.element.removeChild(self.sprite.element);
-              //
-              //   Game.enemies.kill(self.idx);
-              // }).in(10);
+              var scrapOptions = {
+                scrap: self.scrap,
+
+                direction: self.entity.direction,
+                speed: self.entity.speed,
+
+                width: self.entity.sprite.width,
+                height: self.entity.sprite.height,
+                top: self.entity.sprite.top,
+                left: self.entity.sprite.left
+              };
+
+              Game.riddim.plan(function() {
+                Game.scrap(scrapOptions);
+              }).in(10);
             },
 
             sprite: Utils.getSprite(enemy.name),

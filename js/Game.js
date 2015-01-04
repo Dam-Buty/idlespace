@@ -59,7 +59,7 @@ var Game = {
         this.collider = Collider(document.getElementById("game-area")).start();
         this.ship = Ship().init();
         this.spawner = Spawner();
-        //this.ship.systems.weapons.start();
+        this.ship.systems.weapons.start();
 
         // Map keyboard
         Utils.keyMap();
@@ -77,31 +77,41 @@ var Game = {
         Utils.fitBackground(this.gameArea.background.near);
     },
 
+    checkSector: function() {
+      if (this.collider.teams[1].length == 0) {
+        this.nextSector();
+      }
+    },
+
     nextSector: function() {
         this.sector++;
-        this.spawner.populateSector();
+        while(this.enemies.queue.length == 0) {
+          this.spawner.populateSector();
+        }
         this.enemies.spawn();
 
         this.hudArea.gameSector.innerHTML = this.sector;
     },
 
-    scrap: function(scrap, delay, coords) {
+    scrap: function(options) {
         var values = [1000, 500, 100, 50, 10, 5, 1];
-        for (;scrap > 0;) {
+        for (;options.scrap > 0;) {
             for(var i = 0;i < values.length;i++) {
                 var value = values[i];
 
-                if (scrap >= value) {
-                    var top = coords.top + (Math.random() * coords.height);
-                    var left = coords.left + (Math.random() * coords.width);
+                if (options.scrap >= value) {
+                    var top = options.top + (Math.random() * options.height);
+                    var left = options.left + (Math.random() * options.width);
 
-                    Scrap({
-                        top: top,
-                        left: left,
-                        delay: delay,
-                        value: value
-                    }).move();
-                    scrap -= value;
+                    Game.collider.spawn(Scrap({
+                      direction: options.direction,
+                      speed: options.speed,
+                      top: top,
+                      left: left,
+                      value: value
+                    }));
+
+                    options.scrap -= value;
                     break;
                 }
             }
