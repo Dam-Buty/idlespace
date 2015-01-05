@@ -12,7 +12,8 @@ var Game = {
     hudArea: {
         element: undefined,
         gameSector: undefined,
-        scrap: undefined
+        scrap: undefined,
+        lives: undefined
     },
 
     enemies: {
@@ -62,7 +63,7 @@ var Game = {
         this.collider = Collider(document.getElementById("game-area")).start();
         this.ship = Ship().init();
         this.spawner = Spawner();
-        this.upgrayedd = Upgrayedd().start();
+        // this.upgrayedd = Upgrayedd().start();
         this.ship.systems.weapons.start();
 
         this.hudArea.hp.innerHTML = this.ship.entity.hp;

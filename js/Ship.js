@@ -1,7 +1,7 @@
 var Ship = function() {
     return {
-        lives: 3,
-        scrap: 0,
+        lives: Pact(3, Game.hudArea.lives),
+        scrap: Pact(0, Game.hudArea.scrap),
 
         entity: undefined,
 
@@ -11,7 +11,7 @@ var Ship = function() {
           var self = this;
 
           var options = {
-            hp: 30,
+            hp: Pact(30, Game.hudArea.hp),
             acceleration: 1000,
             team: 0,
             kills: true,
@@ -19,11 +19,8 @@ var Ship = function() {
             damage: 10,
 
             onLethal: function() {
-              self.lives--;
-            },
-
-            onHit: function() {
-              Game.hudArea.hp.innerHTML = self.entity.hp;
+              self.lives.minus(1);
+              self.hp.set(30);
             },
 
             sprite: Utils.getSprite("ship"),
@@ -131,8 +128,7 @@ var Ship = function() {
         },
 
         addScrap: function(value) {
-            this.scrap += value;
-            Game.hudArea.scrap.innerHTML = this.scrap;
+            this.scrap.plus(value);
         }
     };
 };
