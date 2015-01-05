@@ -56,6 +56,7 @@ var Collider = function(area) {
         entity.sprite.left = Math.random() * (this.area.width - entity.sprite.width);
       }
 
+      // All the spawning shit should be done in the frame loop
       this.area.el.appendChild(entity.sprite.el);
 
       entity.sprite.init();
@@ -71,7 +72,7 @@ var Collider = function(area) {
       // queue sprite to be removed in 10 ticks
       Game.riddim.plan(function() {
         self.dead.queue.push(sprite);
-      }).in(10);
+      }).in(dead.deathDelay);
 
       // reorder entities in this team
       for(var i = 0;i < this.teams[team].length;i++) {
@@ -93,7 +94,7 @@ var Collider = function(area) {
     },
 
     frame: function() {
-      console.time("frame");
+      // console.time("frame");
       var self = this;
 
       this.handle = window.requestAnimationFrame(function() {
@@ -137,7 +138,7 @@ var Collider = function(area) {
 
       this.lastTick = time;
 
-      console.timeEnd("frame");
+      // console.timeEnd("frame");
     },
 
     collide: function(teamA, teamB) {

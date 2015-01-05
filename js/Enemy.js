@@ -21,6 +21,7 @@ var Enemy = function(enemy) {
             team: 1,
             kills: true,
             dies: true,
+            deathDelay: 10,
             damage: enemy.damage,
 
             onLethal: function() {

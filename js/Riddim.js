@@ -40,7 +40,7 @@ var Riddim = function(fps) {
           every: function(ticks) {
             var fn2 = function() {
               if (fn()) {
-                Game.riddim.plan(fn).every(ticks);
+                self.plan(fn).every(ticks);
               }
             }
             if (self.queue[ticks] === undefined) {
@@ -50,5 +50,5 @@ var Riddim = function(fps) {
           }
       }
     }
-  }
-}
+  };
+};

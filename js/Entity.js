@@ -4,6 +4,7 @@ var Entity = function(options) {
     hp: options.hp || 0,
     damage: options.damage || 0,
     dead: false,
+    deathDelay: options.deathDelay || 0,   // those are ticks
 
     moving: options.moving || false,
     direction: options.direction || 0,

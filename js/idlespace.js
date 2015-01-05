@@ -28,4 +28,27 @@ var enemies = [{
     speed: [25, 50]
 }];
 
+var upgrades = [{
+  description: "Reactor upgrade (+20 max HP)",
+  price: 5,
+  time: 40,
+  effect: function() {
+    Game.ship.entity.maxHP += 20;
+  }
+}, {
+  description: "Shield upgrade (+5 damage on impact)",
+  price: 5,
+  time: 40,
+  effect: function() {
+    Game.ship.entity.damage += 5;
+  }
+}, {
+  description: "Thrusters upgrade (+50 speed)",
+  price: 10,
+  time: 60,
+  effect: function() {
+    Game.ship.systems.thrusters.speed += 50;
+  }
+}];
+
 Game.go();

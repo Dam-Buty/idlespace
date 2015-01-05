@@ -7,6 +7,7 @@ var Game = {
     spawner: undefined,
     ship: undefined,
     km: undefined,
+    upgrayedd: undefined,
 
     hudArea: {
         element: undefined,
@@ -54,13 +55,17 @@ var Game = {
         this.hudArea.gameSector = document.getElementById("game-sector");
         this.hudArea.shipLives = document.getElementById("ship-lives");
         this.hudArea.scrap = document.getElementById("ship-scrap");
+        this.hudArea.hp = document.getElementById("ship-HP");
 
         // Init spawner and ship
         this.riddim = Riddim().start();
         this.collider = Collider(document.getElementById("game-area")).start();
         this.ship = Ship().init();
         this.spawner = Spawner();
+        this.upgrayedd = Upgrayedd().start();
         this.ship.systems.weapons.start();
+
+        this.hudArea.hp.innerHTML = this.ship.entity.hp;
 
         //this.background();
 

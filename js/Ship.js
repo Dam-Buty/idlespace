@@ -22,6 +22,10 @@ var Ship = function() {
               self.lives--;
             },
 
+            onHit: function() {
+              Game.hudArea.hp.innerHTML = self.entity.hp;
+            },
+
             sprite: Utils.getSprite("ship"),
             top: Game.collider.area.height / 2,
             left: 0
@@ -89,12 +93,7 @@ var Ship = function() {
                 }
             },
 
-            shieldRepair: {
-                time: 5,
-                amount: 10
-            },
-
-            autoRepair: {
+            repair: {
                 active: false,
                 time: 2000,
                 lives: 1
@@ -129,20 +128,6 @@ var Ship = function() {
                   }).every(this.delay);
                 }
             }
-        },
-
-        repairShield: function() {
-            var self = this;
-
-            Game.riddim.plan(function() {
-                if (self.shield < self.maxShield) {
-                    self.shield = Math.min(self.maxShield, self.shield + self.systems.shieldRepair.amount);
-                    self.sprite.hud.shield.style.width = (self.shield * 100 / self.maxShield) + "%";
-                    return true;
-                } else {
-                    return false;
-                }
-            }).every(self.systems.shieldRepair.time);
         },
 
         addScrap: function(value) {

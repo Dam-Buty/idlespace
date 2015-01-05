@@ -6,6 +6,10 @@ var Scrap = function(options) {
       Game.ship.addScrap(value);
     };
 
+    var onHit = function() {
+      this.deathDelay = 5;
+    };
+
     return Entity({
       hp: 1,
       damage: 0,
@@ -20,6 +24,7 @@ var Scrap = function(options) {
       dies: true,
 
       onLethal: onLethal,
+      onHit: onHit,
 
       sprite: Utils.getSprite("scrap"),
       top: options.top,

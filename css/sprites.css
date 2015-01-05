@@ -24,14 +24,6 @@
     color: #FF6B11;
 }
 
-.scrap.dead {
-  opacity: 0;
-}
-
-.bullet.dead {
-  opacity: 0;
-}
-
 .exploding {
     -webkit-animation: explosion 1s;
     -moz-animation: explosion 1s;
