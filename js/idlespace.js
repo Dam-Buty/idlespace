@@ -51,4 +51,12 @@ var upgrades = [{
   }
 }];
 
+//
+// hp = {
+//   hp: 5,
+//   toString: function() { return this.hp; },
+//   el: document.getElementById("ship-scrap"),
+//   set: function(a) { this.hp = a; this.el.innerHTML = a; }
+// };
+
 Game.go();
