@@ -31,11 +31,9 @@ var Upgrayedd = function() {
     },
 
     spawn: function(upgrade) {
-      var up = Upgrade(upgrade);
+      this.live.push(true);
 
-      this.live.push(up);
-
-      Game.collider.spawn(up.init());
+      Game.collider.spawn(Upgrade(upgrade).init());
     }
   };
 };

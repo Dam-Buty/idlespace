@@ -1,7 +1,11 @@
 var Entity = function(options) {
   return {
-    maxHp: options.hp || 0,
-    hp: options.hp || 0,
+    hp: Pact(
+      options.hp || 0,
+      options.sprite.getElementsByClassName("hp")[0] || undefined,
+      "width",
+      "%"
+    ),
     damage: options.damage || 0,
     dead: false,
     deathDelay: options.deathDelay || 0,   // those are ticks
@@ -17,7 +21,9 @@ var Entity = function(options) {
     team: options.team || 0,
     kills: options.kills || false,
     dies: options.dies || false,
+    suffers: options.suffers || false,
 
+    onCollide: options.onCollide || undefined,
     onHit: options.onHit || undefined,
     onLethal: options.onLethal || undefined,
 
@@ -29,16 +35,9 @@ var Entity = function(options) {
       width: 0,
       height: 0,
 
-      hud: undefined,
-
       init: function() {
         this.width = this.el.offsetWidth;
         this.height = this.el.offsetHeight;
-
-        var huds = this.el.getElementsByClassName("hp");
-        if (huds.length > 0) {
-          this.hud = huds[0];
-        }
       },
 
       move: function(x, y, area, parent) {
@@ -80,7 +79,6 @@ var Entity = function(options) {
             case "die":
               if ( this.left < 0 || this.top < 0 || this.left > area.width || this.top > area.height) {
                 parent.dead = true;
-                parent.onLethal = undefined;
               }
               break;
           }
@@ -130,21 +128,25 @@ var Entity = function(options) {
     },
 
     hit: function(damage) {
-      this.hp -= damage;
-
-      if (this.sprite.hud !== undefined) {
-        this.sprite.hud.style.width = (this.hp / this.maxHp * 100) + "%";
+      if (this.onCollide !== undefined) {
+          this.onCollide();
       }
 
-      if (this.onHit !== undefined) {
-        this.onHit();
-      }
+      if (this.suffers) {
+        if (this.onHit !== undefined) {
+          this.onHit();
+        }
 
-      if (this.hp <= 0) {
-        if (this.dies) {
-          this.dead = true;
-          if (this.sprite.hud !== undefined) {
-            this.sprite.el.removeChild(this.sprite.hud);
+        this.hp.minus(damage);
+
+        // If the entity dies, it is flagged as dead
+        //      to be collected by the Collider who will then call the onLethal callback
+        // Otherwise, the onLethal callback is immediately called
+        if (this.hp <= 0) {
+          if (this.dies) {
+            this.dead = true;
+          } else {
+            this.onLethal();
           }
         }
       }

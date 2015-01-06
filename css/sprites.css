@@ -24,6 +24,15 @@
     color: #FF6B11;
 }
 
+.upgrade span.price {
+  color: red;
+}
+
+.upgrade div.description {
+  background-color: grey;
+  color: white;
+}
+
 .exploding {
     -webkit-animation: explosion 1s;
     -moz-animation: explosion 1s;

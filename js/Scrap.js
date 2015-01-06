@@ -1,13 +1,11 @@
 var Scrap = function(options) {
     var value = options.value;
 
-    var onLethal = function() {
+    var onCollide = function() {
       this.sprite.el.innerHTML = value;
       Game.ship.addScrap(value);
-    };
-
-    var onHit = function() {
       this.deathDelay = 5;
+      this.dead = true;
     };
 
     return Entity({
@@ -23,8 +21,7 @@ var Scrap = function(options) {
       kills: false,
       dies: true,
 
-      onLethal: onLethal,
-      onHit: onHit,
+      onCollide: onCollide,
 
       sprite: Utils.getSprite("scrap"),
       top: options.top,

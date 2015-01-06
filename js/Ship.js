@@ -11,16 +11,17 @@ var Ship = function() {
           var self = this;
 
           var options = {
-            hp: Pact(30, Game.hudArea.hp),
+            hp: 30,
             acceleration: 1000,
             team: 0,
             kills: true,
             dies: false,
+            suffers: true,
             damage: 10,
 
             onLethal: function() {
               self.lives.minus(1);
-              self.hp.set(30);
+              self.entity.hp.set(30);
             },
 
             sprite: Utils.getSprite("ship"),
@@ -32,12 +33,27 @@ var Ship = function() {
 
           Game.collider.spawn(this.entity);
 
-          this.km = Keymapper(this.systems.thrusters.activate).start();
+          this.km = Keymapper(this.systems.triage).start();
 
           return this;
         },
 
         systems: {
+          triage: function(pressed) {
+            if (pressed[37]
+              || pressed[38]
+              || pressed[39]
+              || pressed[40]
+            ) {
+              Game.ship.systems.thrusters.activate(pressed);
+            } else {
+              if (pressed[32]) {
+                Game.ship.systems.weapons.start();
+              } else {
+                Game.ship.systems.weapons.stop();
+              }
+            }
+          },
             thrusters: {
                 speed: 100,
                 acceleration: 1000,
@@ -92,8 +108,29 @@ var Ship = function() {
 
             repair: {
                 active: false,
-                time: 2000,
-                lives: 1
+                time: 10,
+                hp: 5,
+
+                tick: function() {
+                  var self = this;
+
+                  Game.ship.entity.hp.upTo(this.hp);
+
+                  if (this.active) {
+                    Game.riddim.plan(function() {
+                      self.tick();
+                    }).in(this.time);
+                  }
+                },
+
+                start: function() {
+                  this.active = true;
+                  this.tick();
+                },
+
+                stop: function() {
+                  this.active = false;
+                }
             },
 
             magnet: {
@@ -109,9 +146,8 @@ var Ship = function() {
                 damage: 4,
                 missiles: 0,
 
-                start: function() {
+                tick: function() {
                   var self = this;
-                  this.active = true;
 
                   Game.riddim.plan(function() {
                     Game.collider.spawn(Bullet({
@@ -123,6 +159,17 @@ var Ship = function() {
 
                     return self.active;
                   }).every(this.delay);
+                },
+
+                start: function() {
+                  if (!this.active) {
+                    this.active = true;
+                    this.tick();
+                  }
+                },
+
+                stop: function() {
+                  this.active = false;
                 }
             }
         },

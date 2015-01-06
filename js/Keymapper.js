@@ -1,6 +1,7 @@
 var Keymapper = function(callback) {
   return {
     pressed: {
+      32: false, // space
       37: false, // left
       38: false, // up
       39: false, // right

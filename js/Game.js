@@ -1,6 +1,5 @@
 var Game = {
-    sector: 0,
-    handle: undefined,
+    sector: undefined,
 
     riddim: undefined,
     collider: undefined,
@@ -11,7 +10,7 @@ var Game = {
 
     hudArea: {
         element: undefined,
-        gameSector: undefined,
+        sector: undefined,
         scrap: undefined,
         lives: undefined
     },
@@ -53,20 +52,19 @@ var Game = {
     go: function() {
         // Init HUD
         this.hudArea.element = document.getElementById("hud-area");
-        this.hudArea.gameSector = document.getElementById("game-sector");
-        this.hudArea.shipLives = document.getElementById("ship-lives");
+        this.hudArea.sector = document.getElementById("game-sector");
         this.hudArea.scrap = document.getElementById("ship-scrap");
-        this.hudArea.hp = document.getElementById("ship-HP");
+        this.hudArea.lives = document.getElementById("ship-lives");
+
+        this.sector = Pact(0, this.hudArea.sector);
 
         // Init spawner and ship
         this.riddim = Riddim().start();
         this.collider = Collider(document.getElementById("game-area")).start();
         this.ship = Ship().init();
         this.spawner = Spawner();
-        // this.upgrayedd = Upgrayedd().start();
-        this.ship.systems.weapons.start();
-
-        this.hudArea.hp.innerHTML = this.ship.entity.hp;
+        this.upgrayedd = Upgrayedd().start();
+        // this.ship.systems.weapons.start();
 
         //this.background();
 
@@ -85,13 +83,11 @@ var Game = {
     },
 
     nextSector: function() {
-        this.sector++;
+        this.sector.plus(1);
         while(this.enemies.queue.length == 0) {
           this.spawner.populateSector();
         }
         this.enemies.spawn();
-
-        this.hudArea.gameSector.innerHTML = this.sector;
     },
 
     scrap: function(options) {

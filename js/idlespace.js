@@ -30,33 +30,37 @@ var enemies = [{
 
 var upgrades = [{
   description: "Reactor upgrade (+20 max HP)",
+  short: "HP+",
   price: 5,
   time: 40,
   effect: function() {
-    Game.ship.entity.maxHP += 20;
+    Game.ship.entity.hp.resetPlus(20);
+    console.log(Game.ship.entity.hp);
   }
 }, {
-  description: "Shield upgrade (+5 damage on impact)",
+  description: "Shield upgrade (+10 damage on impact)",
+  short: "SH+",
   price: 5,
   time: 40,
   effect: function() {
-    Game.ship.entity.damage += 5;
+    Game.ship.entity.damage += 10;
   }
 }, {
   description: "Thrusters upgrade (+50 speed)",
+  short: "SP+",
   price: 10,
   time: 60,
   effect: function() {
     Game.ship.systems.thrusters.speed += 50;
   }
+}, {
+  description: "Self-repairing hull (+5hp/s)",
+  short: "RG+",
+  price: 10,
+  time: 60,
+  effect: function() {
+    Game.ship.systems.repair.start();
+  }
 }];
-
-//
-// hp = {
-//   hp: 5,
-//   toString: function() { return this.hp; },
-//   el: document.getElementById("ship-scrap"),
-//   set: function(a) { this.hp = a; this.el.innerHTML = a; }
-// };
 
 Game.go();

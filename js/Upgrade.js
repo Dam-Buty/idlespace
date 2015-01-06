@@ -2,9 +2,9 @@ var Upgrade = function(options) {
   return {
     price: options.price,
     description: options.description,
+    short: options.short,
     effect: options.effect,
 
-    maxTimer: options.time,
     timer: options.time,
 
     entity: Entity({
@@ -13,38 +13,46 @@ var Upgrade = function(options) {
 
       moving: true,
       direction: 270,
-      speed: 75,
+      speed: 50,
       warp: "die",
 
       team: 1,
       kills: false,
       dies: false,
 
-      onHit: undefined,
-
       sprite: Utils.getSprite("upgrade"),
       top: -1,
-      left: Game.collider.area.offsetWidth
+      left: Game.collider.area.width
     }),
 
     init: function() {
       var self = this;
 
-      var onHit = function() {
-        if (self.timer > 0) {
-          self.timer--;
-          self.entity.sprite.el.getElementsByClassName("hp")[0].style.width = (self.timer / self.maxTimer * 100) + "%";
-        } else {
-          self.effect();
-          self.entity.dead = true;
+      var onCollide = function() {
+        if (Game.ship.scrap >= self.price) {
+          if (self.timer > 0) {
+            self.timer.minus(1);
+          } else {
+              self.effect();
+              Game.ship.scrap.minus(self.price);
+            self.entity.dead = true;
+          }
         }
       };
 
-      this.entity.onHit = onHit;
+      var onLethal = function() {
+        Game.upgrayedd.live.pop();
+      };
+
+      this.timer = Pact(this.timer, this.entity.sprite.el, "opacity", "/1");
+      this.price = Pact(this.price, this.entity.sprite.el.getElementsByClassName("price")[0]);
+      this.short = Pact(this.short, this.entity.sprite.el.getElementsByClassName("short")[0]);
+      this.description = Pact(this.description, this.entity.sprite.el.getElementsByClassName("description")[0]);
+
+      this.entity.onCollide = onCollide;
+      this.entity.onLethal = onLethal;
 
       return this.entity;
     }
-  }
-
-  return ;
-}
+  };
+};

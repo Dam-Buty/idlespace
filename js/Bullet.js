@@ -11,6 +11,7 @@ var Bullet = function(options) {
       team: options.team,
       kills: true,
       dies: true,
+      suffers: true,
 
       sprite: Utils.getSprite("bullet"),
       top: Game.ship.entity.sprite.top + (Game.ship.entity.sprite.height / 2),
