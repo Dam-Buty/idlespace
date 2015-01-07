@@ -48,16 +48,6 @@ var Pact = function(value, element, attribute, unit) {
       this.refresh();
     },
 
-    upTo: function(x) {
-      this.value = Math.min(this.originalValue, this.value + x);
-      this.refresh();
-    },
-
-    downTo: function(x) {
-      this.value = Math.max(0, this.value - x);
-      this.refresh();
-    },
-
     minus: function(x) {
       this.value -= x;
       this.refresh();
@@ -65,6 +55,16 @@ var Pact = function(value, element, attribute, unit) {
 
     set: function(x) {
       this.value = x;
+      this.refresh();
+    },
+
+    upTo: function(x) {
+      this.value = Math.min(this.originalValue, this.value + x);
+      this.refresh();
+    },
+
+    downTo: function(x) {
+      this.value = Math.max(0, this.value - x);
       this.refresh();
     },
 

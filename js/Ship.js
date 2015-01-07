@@ -54,124 +54,135 @@ var Ship = function() {
               }
             }
           },
-            thrusters: {
-                speed: 100,
-                acceleration: 1000,
-                activate: function(pressed) {
-                  var direction = 0;
+          thrusters: {
+              speed: 100,
+              acceleration: 1000,
+              activate: function(pressed) {
+                var direction = 0;
 
-                  if (!pressed[37]
-                    && !pressed[38]
-                    && !pressed[39]
-                    && !pressed[40]
-                  ) {
-                    Game.ship.entity.moving = false;
+                if (!pressed[37]
+                  && !pressed[38]
+                  && !pressed[39]
+                  && !pressed[40]
+                ) {
+                  Game.ship.entity.moving = false;
+                } else {
+                  if (pressed[37]) {
+                    if (pressed[38]) {
+                      direction = 315;
+                    } else {
+                      if (pressed[40]) {
+                        direction = 225;
+                      } else {
+                        direction = 270;
+                      }
+                    }
                   } else {
-                    if (pressed[37]) {
+                    if (pressed[39]) {
                       if (pressed[38]) {
-                        direction = 315;
+                        direction = 45;
                       } else {
                         if (pressed[40]) {
-                          direction = 225;
+                          direction = 135;
                         } else {
-                          direction = 270;
+                          direction = 90;
                         }
                       }
                     } else {
-                      if (pressed[39]) {
-                        if (pressed[38]) {
-                          direction = 45;
-                        } else {
-                          if (pressed[40]) {
-                            direction = 135;
-                          } else {
-                            direction = 90;
-                          }
-                        }
+                      if (pressed[38]) {
+                        direction = 0;
                       } else {
-                        if (pressed[38]) {
-                          direction = 0;
-                        } else {
-                          if (pressed[40]) {
-                            direction = 180
-                          }
+                        if (pressed[40]) {
+                          direction = 180
                         }
                       }
                     }
-
-                    Game.ship.entity.speed = Game.ship.systems.thrusters.speed;
-                    Game.ship.entity.moving = true;
-                    Game.ship.entity.direction = direction;
                   }
+
+                  Game.ship.entity.speed = Game.ship.systems.thrusters.speed;
+                  Game.ship.entity.moving = true;
+                  Game.ship.entity.direction = direction;
                 }
-            },
+              },
 
-            repair: {
-                active: false,
-                time: 10,
-                hp: 5,
+              level: 0,
+              upgrades: [{
+                description: "Thrusters upgrade (+50 speed)",
+                short: "SP+",
+                price: 10,
+                time: 60,
+                effect: function() {
+                  Game.ship.systems.thrusters.speed += 50;
+                }
+              }]
+          },
 
-                tick: function() {
-                  var self = this;
+          repair: {
+              active: false,
+              time: 10,
+              hp: 5,
 
-                  Game.ship.entity.hp.upTo(this.hp);
+              tick: function() {
+                var self = this;
 
-                  if (this.active) {
-                    Game.riddim.plan(function() {
-                      self.tick();
-                    }).in(this.time);
-                  }
-                },
+                Game.ship.entity.hp.upTo(this.hp);
 
-                start: function() {
+                if (this.active) {
+                  Game.riddim.plan(function() {
+                    self.tick();
+                  }).in(this.time);
+                }
+              },
+
+              start: function() {
+                this.active = true;
+                this.tick();
+              },
+
+              stop: function() {
+                this.active = false;
+              }
+          },
+
+          magnet: {
+              radius: 50,
+              force: 10
+          },
+
+          weapons: {
+              active: false,
+              delay: 4,
+              bullets: 1,
+              speed: 200,
+              damage: 4,
+              missiles: 0,
+
+              tick: function() {
+                var self = this;
+
+                Game.riddim.plan(function() {
+                  Game.collider.spawn(Bullet({
+                    team: 0,
+                    speed: self.speed,
+                    damage: self.damage,
+                    direction: 90
+                  }));
+
+                  return self.active;
+                }).every(this.delay);
+              },
+
+              start: function() {
+                if (!this.active) {
                   this.active = true;
                   this.tick();
-                },
-
-                stop: function() {
-                  this.active = false;
                 }
-            },
+              },
 
-            magnet: {
-                radius: 50,
-                force: 10
-            },
-
-            weapons: {
-                active: false,
-                delay: 4,
-                bullets: 1,
-                speed: 200,
-                damage: 4,
-                missiles: 0,
-
-                tick: function() {
-                  var self = this;
-
-                  Game.riddim.plan(function() {
-                    Game.collider.spawn(Bullet({
-                      team: 0,
-                      speed: self.speed,
-                      damage: self.damage,
-                      direction: 90
-                    }));
-
-                    return self.active;
-                  }).every(this.delay);
-                },
-
-                start: function() {
-                  if (!this.active) {
-                    this.active = true;
-                    this.tick();
-                  }
-                },
-
-                stop: function() {
-                  this.active = false;
-                }
-            }
+              stop: function() {
+                this.active = false;
+              }
+          }
         },
 
         addScrap: function(value) {

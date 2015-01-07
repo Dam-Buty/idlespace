@@ -35,7 +35,6 @@ var upgrades = [{
   time: 40,
   effect: function() {
     Game.ship.entity.hp.resetPlus(20);
-    console.log(Game.ship.entity.hp);
   }
 }, {
   description: "Shield upgrade (+10 damage on impact)",

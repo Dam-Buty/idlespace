@@ -33,8 +33,8 @@ var Upgrade = function(options) {
           if (self.timer > 0) {
             self.timer.minus(1);
           } else {
-              self.effect();
-              Game.ship.scrap.minus(self.price);
+            self.effect();
+            Game.ship.scrap.minus(self.price);
             self.entity.dead = true;
           }
         }
