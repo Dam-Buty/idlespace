@@ -53,18 +53,25 @@ var Pact = function(value, element, attribute, unit) {
       this.refresh();
     },
 
+    by: function(x) {
+      this.value *= x;
+      this.refresh();
+    },
+
     set: function(x) {
       this.value = x;
       this.refresh();
     },
 
     upTo: function(x) {
-      this.value = Math.min(this.originalValue, this.value + x);
+      x = x || this.originalValue;
+      this.value = Math.min(x, this.value);
       this.refresh();
     },
 
     downTo: function(x) {
-      this.value = Math.max(0, this.value - x);
+      x = x || 0;
+      this.value = Math.max(x, this.value);
       this.refresh();
     },
 

@@ -22,7 +22,7 @@ var Enemy = function(enemy) {
             kills: true,
             dies: true,
             suffers: true,
-            
+
             deathDelay: 10,
             damage: enemy.damage,
 
@@ -31,7 +31,7 @@ var Enemy = function(enemy) {
               self.entity.sprite.el.classList.add("exploding");
               Game.checkSector();
 
-              var scrapOptions = {
+              var lootOptions = {
                 scrap: self.scrap,
 
                 direction: self.entity.direction,
@@ -44,7 +44,7 @@ var Enemy = function(enemy) {
               };
 
               Game.riddim.plan(function() {
-                Game.scrap(scrapOptions);
+                Game.loot(lootOptions);
               }).in(10);
             },
 

@@ -15,6 +15,11 @@ var Game = {
         lives: undefined
     },
 
+    upgradesArea: {
+      element: undefined,
+      dummy: undefined
+    },
+
     enemies: {
         queue: [],
 
@@ -56,11 +61,14 @@ var Game = {
         this.hudArea.scrap = document.getElementById("ship-scrap");
         this.hudArea.lives = document.getElementById("ship-lives");
 
+        this.upgradesArea.element = document.getElementById("upgrades-area");
+        this.upgradesArea.dummy = this.upgradesArea.element.getElementById("dummy");
+
         this.sector = Pact(0, this.hudArea.sector);
 
         // Init spawner and ship
         this.riddim = Riddim().start();
-        this.collider = Collider(document.getElementById("game-area")).start();
+        this.collider = Collider(document.body).start();
         this.ship = Ship().init();
         this.spawner = Spawner();
         this.upgrayedd = Upgrayedd().start();
@@ -90,7 +98,7 @@ var Game = {
         this.enemies.spawn();
     },
 
-    scrap: function(options) {
+    loot: function(options) {
         var values = [1000, 500, 100, 50, 10, 5, 1];
         for (;options.scrap > 0;) {
             for(var i = 0;i < values.length;i++) {

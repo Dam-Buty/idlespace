@@ -24,13 +24,8 @@
     color: #FF6B11;
 }
 
-.upgrade span.price {
+.upgrade .price {
   color: red;
-}
-
-.upgrade div.description {
-  background-color: grey;
-  color: white;
 }
 
 .exploding {

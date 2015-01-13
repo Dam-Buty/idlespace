@@ -1,12 +1,15 @@
 var Upgrayedd = function() {
   return {
-    upgrades: [],
-
-    live: [],
+    systems: [],
 
     start: function() {
       var self = this;
-      this.upgrades = upgrades;
+      this.systems = upgrades;
+
+      for(var i = 0;i < this.systems.length;i++) {
+        
+      }
+
 
       Game.riddim.plan(function() {
         self.tick();

@@ -103,18 +103,7 @@ var Ship = function() {
                   Game.ship.entity.moving = true;
                   Game.ship.entity.direction = direction;
                 }
-              },
-
-              level: 0,
-              upgrades: [{
-                description: "Thrusters upgrade (+50 speed)",
-                short: "SP+",
-                price: 10,
-                time: 60,
-                effect: function() {
-                  Game.ship.systems.thrusters.speed += 50;
-                }
-              }]
+              }
           },
 
           repair: {
@@ -125,7 +114,7 @@ var Ship = function() {
               tick: function() {
                 var self = this;
 
-                Game.ship.entity.hp.upTo(this.hp);
+                Game.ship.entity.hp.plus(this.hp).upTo();
 
                 if (this.active) {
                   Game.riddim.plan(function() {
@@ -151,7 +140,7 @@ var Ship = function() {
 
           weapons: {
               active: false,
-              delay: 4,
+              rate: 4,
               bullets: 1,
               speed: 200,
               damage: 4,
@@ -160,16 +149,17 @@ var Ship = function() {
               tick: function() {
                 var self = this;
 
-                Game.riddim.plan(function() {
-                  Game.collider.spawn(Bullet({
-                    team: 0,
-                    speed: self.speed,
-                    damage: self.damage,
-                    direction: 90
-                  }));
-
+                if (this.active) {
+                  Game.riddim.plan(function() {
+                    Game.collider.spawn(Bullet({
+                      team: 0,
+                      speed: self.speed,
+                      damage: self.damage,
+                      direction: 90
+                    }));
+                }
                   return self.active;
-                }).every(this.delay);
+                }).every(this.rate);
               },
 
               start: function() {

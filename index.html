@@ -6,12 +6,16 @@
 </head>
 <body>
 <header>IDLE SPACE</header>
-<section id="game-area">
-</section>
 <section id="hud-area">
-    Level: <span id="game-sector"></span><br/>
-    Lives : <span id="ship-lives"></span><br/>
-		Scrap : <span id="ship-scrap"></span><br/>
+	Level: <span id="game-sector"></span> -
+	Lives : <span id="ship-lives"></span> -
+	Scrap : <span id="ship-scrap"></span>
+</section>
+<section class="upgrades-area">
+	<div class="upgrade" id="dummy">
+		<span class="short"></span> - <span class="price"></span>$
+		<span class="description"></span>
+	</div>
 </section>
 <div id="sprites">
 <pre class="bullet">
@@ -19,14 +23,6 @@
 </pre>
 <pre class="scrap">
 *
-</pre>
-<pre class="upgrade">
-<span class="short"></span> - <span class="price"></span>$
-!---!
-! ^ !
-!/o\!
-!===!
-<div class="description"></div>
 </pre>
 <pre class="ship">
 =[ᛒ)-.___
@@ -127,7 +123,6 @@
 <script src="js/Entity.js"></script>
 <script src="js/Collider.js"></script>
 <script src="js/Upgrayedd.js"></script>
-<script src="js/Upgrade.js"></script>
 <script src="js/Bullet.js"></script>
 <script src="js/Scrap.js"></script>
 <script src="js/Enemy.js"></script>
