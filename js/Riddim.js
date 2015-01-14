@@ -1,22 +1,26 @@
 var Riddim = function(fps) {
   return {
-    handle: undefined,
+    h: undefined,
 
     fps: fps || 10,
 
-    queue: [],
+    q: [],
 
     start: function() {
       var self = this;
-      handle = setInterval(function() {
+      this.h = setInterval(function() {
         self.tick();
       }, 1000 / this.fps);
 
       return this;
     },
 
+    stop: function() {
+      window.clearInterval(this.h);
+    },
+
     tick: function() {
-      var current = this.queue.shift();
+      var current = this.q.shift();
 
       if (current !== undefined) {
         for(var i = 0;i < current.length;i++) {
@@ -29,26 +33,26 @@ var Riddim = function(fps) {
       var self = this;
 
       return {
-          fn: fn,
-          in: function(ticks) {
-            if (self.queue[ticks] === undefined) {
-              self.queue[ticks] = [];
-            }
-            self.queue[ticks].push(fn);
-          },
-
-          every: function(ticks) {
-            var fn2 = function() {
-              if (fn()) {
-                self.plan(fn).every(ticks);
-              }
-            }
-            if (self.queue[ticks] === undefined) {
-              self.queue[ticks] = [];
-            }
-            self.queue[ticks].push(fn2);
+        fn: fn,
+        in: function(ticks) {
+          if (self.q[ticks] === undefined) {
+            self.q[ticks] = [];
           }
-      }
+          self.q[ticks].push(fn);
+        },
+
+        every: function(ticks) {
+          var fn2 = function() {
+            if (fn() !== false) {
+              self.plan(fn).every(ticks);
+            }
+          };
+          if (self.q[ticks] === undefined) {
+            self.q[ticks] = [];
+          }
+          self.q[ticks].push(fn2);
+        }
+      };
     }
   };
 };

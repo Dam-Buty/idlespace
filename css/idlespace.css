@@ -31,15 +31,32 @@ body {
     body .background.near {
       -webkit-filter: blur(0.5px);
       color: #883B3B; }
-  body .upgrades-area {
+  body #upgrades-area {
     position: absolute;
     bottom: 0; }
-    body .upgrades-area .upgrade {
-      border: 1px solid white; }
-      body .upgrades-area .upgrade .price {
+    body #upgrades-area .upgrade {
+      position: relative;
+      float: left;
+      bottom: 0;
+      border: 1px solid white;
+      padding: 5px;
+      margin-right: 5px;
+      width: 10em;
+      cursor: pointer;
+      transition: all 200ms linear; }
+      body #upgrades-area .upgrade .price {
         color: red; }
-      body .upgrades-area .upgrade.dummy {
+      body #upgrades-area .upgrade .description {
+        margin-top: 5px; }
+      body #upgrades-area .upgrade:hover {
+        background-color: white;
+        color: black; }
+      body #upgrades-area .upgrade.dummy {
         display: none; }
+      body #upgrades-area .upgrade.expensive {
+        background-color: grey;
+        color: black;
+        pointer-events: none; }
 
 #sprites, #backgrounds {
   position: absolute;

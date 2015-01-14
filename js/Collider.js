@@ -48,6 +48,11 @@ var Collider = function(area) {
 
       this.teams[entity.team].push(entity);
 
+      // All the spawning shit should be done in the frame loop
+      this.area.el.appendChild(entity.sprite.el);
+
+      entity.sprite.init();
+
       if (entity.sprite.top == -1) {
         entity.sprite.top = Math.random() * (this.area.height - entity.sprite.height);
       }
@@ -55,11 +60,6 @@ var Collider = function(area) {
       if (entity.sprite.left == -1) {
         entity.sprite.left = Math.random() * (this.area.width - entity.sprite.width);
       }
-
-      // All the spawning shit should be done in the frame loop
-      this.area.el.appendChild(entity.sprite.el);
-
-      entity.sprite.init();
     },
 
     despawn: function(team, idx) {

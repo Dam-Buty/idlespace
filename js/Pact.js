@@ -45,49 +45,49 @@ var Pact = function(value, element, attribute, unit) {
 
     plus: function(x) {
       this.value += x;
-      this.refresh();
+      return this.refresh();
     },
 
     minus: function(x) {
       this.value -= x;
-      this.refresh();
+      return this.refresh();
     },
 
     by: function(x) {
       this.value *= x;
-      this.refresh();
+      return this.refresh();
     },
 
     set: function(x) {
       this.value = x;
-      this.refresh();
+      return this.refresh();
     },
 
     upTo: function(x) {
       x = x || this.originalValue;
       this.value = Math.min(x, this.value);
-      this.refresh();
+      return this.refresh();
     },
 
     downTo: function(x) {
       x = x || 0;
       this.value = Math.max(x, this.value);
-      this.refresh();
+      return this.refresh();
     },
 
     reset: function(x) {
       this.originalValue = x;
-      this.refresh();
+      return this.refresh();
     },
 
     resetPlus: function(x) {
       this.originalValue += x;
-      this.refresh();
+      return this.refresh();
     },
 
     resetMinus: function(x) {
       this.originalValue -= x;
-      this.refresh();
+      return this.refresh();
     },
   }.refresh();
 };

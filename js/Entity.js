@@ -61,11 +61,11 @@ var Entity = function(options) {
             case "warp":
               if (this.left < 0 - this.width) {
                 this.left = area.width;
-                this.top = area.height - this.top;
+                this.top = Math.random() * (area.height - this.height);
               }
               if (this.left > area.width + this.width) {
                 this.left = 0 - this.width;
-                this.top = area.height - this.top;
+                // this.top = area.height - this.top;
               }
               if (this.top < 0 - this.height) {
                 this.left = area.width - this.left;

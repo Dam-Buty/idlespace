@@ -16,7 +16,7 @@ var Game = {
     },
 
     upgradesArea: {
-      element: undefined,
+      el: undefined,
       dummy: undefined
     },
 
@@ -61,8 +61,8 @@ var Game = {
         this.hudArea.scrap = document.getElementById("ship-scrap");
         this.hudArea.lives = document.getElementById("ship-lives");
 
-        this.upgradesArea.element = document.getElementById("upgrades-area");
-        this.upgradesArea.dummy = this.upgradesArea.element.getElementById("dummy");
+        this.upgradesArea.el = document.getElementById("upgrades-area");
+        this.upgradesArea.dummy = this.upgradesArea.el.getElementsByClassName("dummy")[0];
 
         this.sector = Pact(0, this.hudArea.sector);
 

@@ -48,9 +48,9 @@ var Ship = function() {
               Game.ship.systems.thrusters.activate(pressed);
             } else {
               if (pressed[32]) {
-                Game.ship.systems.weapons.start();
+                // Game.ship.systems.weapons.start();
               } else {
-                Game.ship.systems.weapons.stop();
+                // Game.ship.systems.weapons.stop();
               }
             }
           },
@@ -156,10 +156,10 @@ var Ship = function() {
                       speed: self.speed,
                       damage: self.damage,
                       direction: 90
-                    }));
+                      }));
+                      return self.active;
+                  }).every(this.rate);
                 }
-                  return self.active;
-                }).every(this.rate);
               },
 
               start: function() {

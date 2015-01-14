@@ -46,19 +46,46 @@ body {
     }
   }
 
-  .upgrades-area {
+  #upgrades-area {
     position: absolute;
     bottom: 0;
 
     .upgrade {
+
+      position: relative;
+      float: left;
+      bottom: 0;
+
       border: 1px solid white;
+      padding: 5px;
+      margin-right: 5px;
+      width: 10em;
+
+      cursor: pointer;
+
+      transition: all 200ms linear;
 
       .price {
         color: red;
       }
 
+      .description {
+        margin-top: 5px;
+      }
+
+      &:hover {
+        background-color: white;
+        color: black;
+      }
+
       &.dummy {
         display: none;
+      }
+
+      &.expensive {
+        background-color: grey;
+        color: black;
+        pointer-events: none;
       }
     }
   }
