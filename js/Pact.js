@@ -75,19 +75,29 @@ var Pact = function(value, element, attribute, unit) {
       return this.refresh();
     },
 
-    reset: function(x) {
-      this.originalValue = x;
+    reset: function() {
+      this.value = this.originalValue;
       return this.refresh();
     },
 
-    resetPlus: function(x) {
+    oPlus: function(x) {
       this.originalValue += x;
       return this.refresh();
     },
 
-    resetMinus: function(x) {
+    oMinus: function(x) {
       this.originalValue -= x;
       return this.refresh();
     },
+
+    oBy: function(x) {
+      this.originalValue *= x;
+      return this.refresh();
+    },
+
+    oSet: function(x) {
+      this.originalValue = x;
+      return this.refresh();
+    }
   }.refresh();
 };

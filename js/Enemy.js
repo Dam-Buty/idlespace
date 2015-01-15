@@ -6,15 +6,18 @@ var Enemy = function(enemy) {
 
         entity: undefined,
 
-        init: function() {
+        init: function(level) {
           var self = this;
+          level = 1 + level/10;
+
+          this.scrap *= level;
 
           var options = {
-            hp: enemy.hp,
+            hp: enemy.hp * level,
 
             moving: true,
             direction: 270,
-            speed: Utils.linear(enemy.speed),
+            speed: Utils.linear(enemy.speed) * level,
             acceleration: 1000,
             warp: enemy.warp,
 
@@ -24,12 +27,21 @@ var Enemy = function(enemy) {
             suffers: true,
 
             deathDelay: 10,
-            damage: enemy.damage,
+            damage: enemy.damage * level,
+
+            onWarp: function() {
+              self.entity.hp.oBy(1.1).reset();
+              self.entity.damage *= 1.05;
+              self.entity.speed *= 1.02;
+              self.scrap *= 1.5;
+            },
 
             onLethal: function() {
               //self.sprite.element.removeChild(self.sprite.hud.hp);
               self.entity.sprite.el.classList.add("exploding");
-              Game.checkSector();
+              Game.riddim.plan(function() {
+                Game.checkSector();
+              }).in(5);
 
               var lootOptions = {
                 scrap: self.scrap,

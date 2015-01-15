@@ -59,21 +59,29 @@ var Entity = function(options) {
         } else {
           switch(parent.warp) {
             case "warp":
+              var warped = false;
               if (this.left < 0 - this.width) {
                 this.left = area.width;
                 this.top = Math.random() * (area.height - this.height);
+                warped = true;
               }
               if (this.left > area.width + this.width) {
                 this.left = 0 - this.width;
                 // this.top = area.height - this.top;
+                warped = true;
               }
               if (this.top < 0 - this.height) {
                 this.left = area.width - this.left;
                 this.top = area.height;
+                warped = true;
               }
               if (this.top > area.height + this.height) {
                 this.left = area.width - this.left;
                 this.top = 0 - this.height;
+                warped = true;
+              }
+              if (warped && parent.onWarp !== undefined) {
+                parent.onWarp();
               }
               break;
             case "die":
@@ -137,7 +145,7 @@ var Entity = function(options) {
           this.onHit();
         }
 
-        this.hp.minus(damage);
+        this.hp.minus(Math.max(damage - this.damage / 2, 0));
 
         // If the entity dies, it is flagged as dead
         //      to be collected by the Collider who will then call the onLethal callback

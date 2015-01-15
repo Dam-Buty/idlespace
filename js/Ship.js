@@ -108,8 +108,8 @@ var Ship = function() {
 
           repair: {
               active: false,
-              time: 10,
-              hp: 5,
+              time: 18,
+              hp: 1,
 
               tick: function() {
                 var self = this;
@@ -140,10 +140,10 @@ var Ship = function() {
 
           weapons: {
               active: false,
-              rate: 4,
+              rate: 6,
               bullets: 1,
               speed: 200,
-              damage: 4,
+              damage: 15,
               missiles: 0,
 
               tick: function() {
@@ -172,6 +172,10 @@ var Ship = function() {
               stop: function() {
                 this.active = false;
               }
+          },
+
+          extractor: {
+            rate: 1
           }
         },
 
