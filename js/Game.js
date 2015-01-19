@@ -1,4 +1,5 @@
 var Game = {
+    paused: false,
     sector: undefined,
 
     riddim: undefined,
@@ -18,6 +19,18 @@ var Game = {
     upgradesArea: {
       el: undefined,
       dummy: undefined
+    },
+
+    pause: function() {
+      if (!this.paused) {
+        Game.collider.stop();
+        Game.riddim.stop();
+      } else {
+        Game.collider.start();
+        Game.riddim.start();
+      }
+
+      this.paused = !this.paused;
     },
 
     enemies: {
@@ -63,6 +76,7 @@ var Game = {
         this.ship = Ship().init();
         this.spawner = Spawner();
         this.upgrayedd = Upgrayedd().start();
+        this.km = Keymapper(this.ship.systems.triage).start();
         // this.ship.systems.weapons.start();
 
         //this.background();
