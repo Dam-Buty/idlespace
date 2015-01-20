@@ -10,7 +10,6 @@ var Ship = function() {
 
           var options = {
             hp: 30,
-            acceleration: 1000,
             team: 0,
             kills: true,
             dies: false,
@@ -41,37 +40,80 @@ var Ship = function() {
               || pressed[39]
               || pressed[40]
             ) {
-              Game.ship.entity.speed = Game.ship.systems.thrusters.speed;
+              Game.ship.entity.speed = Game.ship.systems.navigation.speed;
               Game.ship.entity.direction = Game.km.calculateDirection(pressed);
-              Game.ship.systems.thrusters.start();
+              Game.ship.systems.navigation.start();
             } else {
-              Game.ship.systems.thrusters.stop();
+              Game.ship.systems.navigation.stop();
             }
 
             if (pressed[32]) {
               Game.pause();
             }
           },
-          thrusters: {
-              speed: 100,
-              acceleration: 1000,
-              start: function() {
+
+          navigation: {
+            active: true,
+            speed: 100,
+            start: function() {
+              if (this.active) {
                 Game.ship.entity.moving = true;
-              },
-              stop: function() {
-                Game.ship.entity.moving = false;
               }
+            },
+            stop: function() {
+              Game.ship.entity.moving = false;
+            }
+          },
+
+          weapons: {
+            active: false,
+            rate: 6,
+            bullets: 1,
+            speed: 200,
+            damage: 15,
+            missiles: 0,
+
+            tick: function() {
+              var self = this;
+
+              if (this.active) {
+                Game.riddim.plan(function() {
+                  Game.collider.spawn(Bullet({
+                    team: 0,
+                    speed: self.speed,
+                    damage: self.damage,
+                    direction: 90
+                  }));
+                  return self.active;
+                }).every(this.rate);
+              }
+            },
+
+            start: function() {
+              if (!this.active) {
+                this.active = true;
+                this.tick();
+              }
+            },
+
+            stop: function() {
+              this.active = false;
+            }
           },
 
           repair: {
               active: false,
               time: 18,
               hp: 1,
+              ratio: 1,
 
               tick: function() {
                 var self = this;
 
-                Game.ship.entity.hp.plus(this.hp).upTo();
+                if (Game.ship.scrap > this.hp / this.ratio) {
+                  Game.ship.entity.hp.plus(this.hp).upTo();
+                  Game.ship.scrap.minus(this.hp / this.ratio);
+                }
 
                 if (this.active) {
                   Game.riddim.plan(function() {
@@ -93,42 +135,6 @@ var Ship = function() {
           magnet: {
               radius: 50,
               force: 10
-          },
-
-          weapons: {
-              active: false,
-              rate: 6,
-              bullets: 1,
-              speed: 200,
-              damage: 15,
-              missiles: 0,
-
-              tick: function() {
-                var self = this;
-
-                if (this.active) {
-                  Game.riddim.plan(function() {
-                    Game.collider.spawn(Bullet({
-                      team: 0,
-                      speed: self.speed,
-                      damage: self.damage,
-                      direction: 90
-                      }));
-                      return self.active;
-                  }).every(this.rate);
-                }
-              },
-
-              start: function() {
-                if (!this.active) {
-                  this.active = true;
-                  this.tick();
-                }
-              },
-
-              stop: function() {
-                this.active = false;
-              }
           },
 
           extractor: {

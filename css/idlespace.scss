@@ -37,11 +37,11 @@ body {
     font-size: 5px;
 
     &.far {
-      -webkit-filter: blur(1px);
+      // -webkit-filter: blur(1px);
       color: #6363E8;
     }
     &.near {
-      -webkit-filter: blur(0.5px);
+      // -webkit-filter: blur(0.5px);
       color: #883B3B;
     }
   }

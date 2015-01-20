@@ -18,7 +18,6 @@ var Enemy = function(enemy) {
             moving: true,
             direction: 270,
             speed: Utils.linear(enemy.speed) * level,
-            acceleration: 1000,
             warp: enemy.warp,
 
             team: 1,

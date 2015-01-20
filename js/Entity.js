@@ -13,7 +13,6 @@ var Entity = function(options) {
     moving: options.moving || false,
     direction: options.direction || 0,
     speed: options.speed || 0,                  // speed is nb of pixels by second
-    acceleration: options.acceleration || 0,
     warp: options.warp || undefined,
 
     onWarp: options.onWarp || undefined,

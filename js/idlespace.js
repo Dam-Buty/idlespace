@@ -55,81 +55,98 @@ var enemies = [{
   speed: [90, 130]
 }];
 
-var upgrades = [{                                     // WEAPONS
-  price: 1,
-  short: "#SHOOT#",
-  description: "Rain fire upon them, soldier",
-  effect: function() {
-    Game.ship.systems.weapons.start();
-  }
+var systems = [{
+  name: "Navigation",
+  on: true,
+  description: "Gives you access to the Navigation system. Your ship can't move without this.",
+  circuits: [{
+    name: "Engine",
+    description: "Higher speed",
+    baseStat: 100,
+    stats: [135, 180, 250],
+    effect: function(stat) {
+      Game.ship.systems.navigation.speed = stat;
+    }
+  }]
 }, {
-  price: [50, 200, 1666, 5000],
-  stats: [23, 50, 99, 166],
-  short: "#DMG+#",
-  description: "Set phasers to HARDER",
-  effect: function(stat) {
-    Game.ship.systems.weapons.damage = stat;
-  }
+  name: "Weapons",
+  on: false,
+  description: "Standard Issue Pulse Artillery",
+  circuits: [{
+    name: "Plasma core",
+    description: "More volts = more damage",
+    baseStat: 15,
+    stats: [23, 50, 99, 166],
+    effect: function(stat) {
+      Game.ship.systems.weapons.damage = stat;
+    }
+  }, {
+    name: "Vortex",
+    description: "A finely tuned vortex emits faster pulses",
+    baseStat: 200,
+    stats: [300, 600, 800],
+    effect: function(stat) {
+      Game.ship.systems.weapons.speed = stat;
+    }
+  }, {
+    name: "Nitrogen-cooled pulser",
+    description: "A cooled pulser can shoot more times per second without burning the whole place down",
+    baseStat: 6,
+    stats: [4, 2, 1],
+    effect: function(stat) {
+      Game.ship.systems.weapons.rate = stat;
+    }
+  }]
 }, {
-  price: [70, 350, 1500],
-  stats: [300, 600, 800],
-  short: "#FSTR#",
-  description: "Those bullets don't kick MORE ass, they just kick it FASTER",
-  effect: function(stat) {
-    Game.ship.systems.weapons.speed = stat;
-  }
+  name: "Hull",
+  description: "Essentially protects you from explosive decompression",
+  on: false,
+  circuits: [{
+    name: "Force Shield",
+    description: "Protects you from flying debris and inflicts damage upon impact",
+    baseStat: 10,
+    stats: [15, 25],
+    effect: function(stat) {
+      Game.ship.entity.damage = stat;
+    }
+  }, {
+    name: "Scrap Extractor",
+    description: "Makes usable scrap out of the debris of your fallen enemies",
+    baseStat: 1,
+    stats: [1.6, 6],
+    effect: function(stat) {
+      Game.ship.systems.extractor.rate = stat;
+    }
+  }]
 }, {
-  price: [300, 900, 5000, 15000, 25000],
-  stats: [5, 4, 3, 2, 1],
-  short: "#RATE+#",
-  description: "More bullets per second means more knuckles to their teeth",
-  effect: function(stat) {
-    Game.ship.systems.weapons.rate = stat;
-  }
-},
-{                                                         // SHIELD
-  price: [5, 125],
-  stats: [15, 150],
-  short: "{SHIELD}",
-  description: "Better protection and higher damage on impact",
-  effect: function(stat) {
-    Game.ship.entity.damage = stat;
-  }
-},
-{                                                       //REPAIR
-  price: 35,
-  short: "-RPR-",
-  description: "A cloud of repair nano-drones takes care of you while you fight",
-  effect: function() {
-    Game.ship.systems.repair.start();
-  }
-},
-{                                                   // THRUSTERS
-  price: [100, 500, 1666, 3456],
-  stats: [15, 35, 70, 150],
-  short: "~SPD+~",
-  description: "More speed to get out of dodge",
-  effect: function(stat) {
-    Game.ship.systems.thrusters.speed += stat;
-  }
-},
-{                                                   // REACTOR
-  price: [120, 360, 450, 999],
-  stats: [15, 35, 70, 150],
-  short: "¤HP+¤",
-  description: "Add a compact layer of nano-drones to your hull so you can take more pounding",
-  effect: function(stat) {
-    Game.ship.entity.hp.oPlus(stat).reset();
-  }
-},
-{                                                   // EXTRACTOR
-  price: [200, 20000],
-  stats: [1.6, 6],
-  short: "-$$$-",
-  description: "A better extractor will mine more scrap from the debris of your fallen enemies",
-  effect: function(stat) {
-    Game.ship.systems.extractor.rate = stat;
-  }
+  name: "Repair drones",
+  description: "Those nanobots automatically patch you up while you fight. Beware, though, it will cost you some scrap.",
+  on: false,
+  circuits: [{
+    name: "More nanobots",
+    description: "Can heal more HP",
+    baseStat: 1,
+    stats: [2, 8, 20],
+    effect: function(stat) {
+      Game.ship.systems.repair.hp = stat;
+    }
+  }, {
+    name: "Better nanobots",
+    description: "Can heal faster",
+    baseStat: 18,
+    stats: [12, 5, 2],
+    effect: function(stat) {
+      Game.ship.systems.repair.hp = stat;
+    }
+  }, {
+    name: "Smaller nanobots",
+    description: "Can heal with less scrap",
+    baseStat: 1,
+    stats: [2, 3, 4],
+    effect: function(stat) {
+      Game.ship.systems.repair.ratio = stat;
+    }
+  }]
 }];
 
 // var levels = [{

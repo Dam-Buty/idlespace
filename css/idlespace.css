@@ -26,10 +26,8 @@ body {
     transform-origin: 0 0;
     font-size: 5px; }
     body .background.far {
-      -webkit-filter: blur(1px);
       color: #6363E8; }
     body .background.near {
-      -webkit-filter: blur(0.5px);
       color: #883B3B; }
   body #upgrades-area {
     position: absolute;
